@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://dln5k41wt6j61"]
+
+[ext_resource type="Script" uid="uid://uyj6jqax3cf3" path="res://card.gd" id="1_kikvd"]
+[ext_resource type="Texture2D" uid="uid://baabk23wxr2q1" path="res://icon.svg" id="2_rjlel"]
+
+[node name="Card" type="Button"]
+offset_right = 136.0
+offset_bottom = 136.0
+icon = ExtResource("2_rjlel")
+script = ExtResource("1_kikvd")
+
+[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
+[connection signal="focus_exited" from="." to="." method="_on_focus_exited"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
