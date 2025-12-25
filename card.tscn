@@ -1,15 +1,103 @@
-[gd_scene load_steps=3 format=3 uid="uid://dln5k41wt6j61"]
+[gd_scene load_steps=15 format=3 uid="uid://dln5k41wt6j61"]
 
 [ext_resource type="Script" uid="uid://uyj6jqax3cf3" path="res://card.gd" id="1_kikvd"]
-[ext_resource type="Texture2D" uid="uid://baabk23wxr2q1" path="res://icon.svg" id="2_rjlel"]
+[ext_resource type="Texture2D" uid="uid://wj4upme3y50j" path="res://numbers.png" id="2_rjlel"]
 
-[node name="Card" type="Button"]
-offset_right = 136.0
-offset_bottom = 136.0
-icon = ExtResource("2_rjlel")
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
+size = Vector2(27, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q5obu"]
+atlas = ExtResource("2_rjlel")
+region = Rect2(0, 0, 27, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e484p"]
+atlas = ExtResource("2_rjlel")
+region = Rect2(28, 0, 27, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fpac0"]
+atlas = ExtResource("2_rjlel")
+region = Rect2(56, 0, 27, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1i5pp"]
+atlas = ExtResource("2_rjlel")
+region = Rect2(84, 0, 27, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pjytt"]
+atlas = ExtResource("2_rjlel")
+region = Rect2(112, 0, 27, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b4rk6"]
+atlas = ExtResource("2_rjlel")
+region = Rect2(140, 0, 27, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6lcat"]
+atlas = ExtResource("2_rjlel")
+region = Rect2(168, 0, 27, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ut1v0"]
+atlas = ExtResource("2_rjlel")
+region = Rect2(196, 0, 27, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vno60"]
+atlas = ExtResource("2_rjlel")
+region = Rect2(224, 0, 27, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l0gnn"]
+atlas = ExtResource("2_rjlel")
+region = Rect2(252, 0, 27, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_is7yf"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q5obu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e484p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fpac0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1i5pp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pjytt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b4rk6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6lcat")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ut1v0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vno60")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l0gnn")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Card" type="Area2D"]
+z_index = 2
+z_as_relative = false
 script = ExtResource("1_kikvd")
 
-[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
-[connection signal="focus_exited" from="." to="." method="_on_focus_exited"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_rjlel")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0.5, 0)
+sprite_frames = SubResource("SpriteFrames_is7yf")
+frame = 5
+frame_progress = 0.95438963
+
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

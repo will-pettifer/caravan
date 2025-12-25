@@ -1,11 +1,16 @@
 [gd_scene load_steps=2 format=3 uid="uid://yedp7ci4l25n"]
 
-[ext_resource type="PackedScene" uid="uid://dln5k41wt6j61" path="res://card.tscn" id="1_ig7tw"]
+[ext_resource type="PackedScene" uid="uid://bgb0e6o5i7kn0" path="res://zone.tscn" id="1_0xm2m"]
 
 [node name="Main" type="Node2D"]
 
-[node name="Card" parent="." instance=ExtResource("1_ig7tw")]
-offset_left = -66.0
-offset_top = -62.0
-offset_right = 62.0
-offset_bottom = 66.0
+[node name="Zone" parent="." instance=ExtResource("1_0xm2m")]
+z_index = -4
+position = Vector2(216, 383)
+type = 1
+
+[node name="Zone2" parent="." instance=ExtResource("1_0xm2m")]
+position = Vector2(904, 375)
+
+[node name="Zone3" parent="." instance=ExtResource("1_0xm2m")]
+position = Vector2(561, 378)

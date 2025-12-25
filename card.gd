@@ -1,59 +1,52 @@
 class_name Card
 
-extends Control
+extends Area2D
 
 
-var state: State = State.HAND
-var state_buffer: State
-var value: int
-var time: float
+@export var offset: Vector2 = Vector2(0, 0)
 
-enum State {HAND, FOCUSED, FLOATING, ZONE}
+var state: State
+var value: int = 1
+var parent_zone: Zone
 
+enum State {
+	ZONE,			# In the zone
+	FOCUSED,		# Cursor hovering over
+	FLOATING		# Held by the cursor
+}
 
 
 func _ready() -> void:
-	pass
+	$AnimatedSprite2D.animation = "default"
+	$AnimatedSprite2D.frame = value - 1
 
 
 func _process(delta: float) -> void:
 	match state:
-		State.HAND:
-			pass
 		State.FLOATING:
-			position = get_viewport().get_mouse_position()
+			position = get_viewport().get_mouse_position() - offset
 		State.ZONE:
 			pass
 
 
 func _input(event: InputEvent) -> void:
-	if state == State.HAND || State.ZONE:
-		if event.is_action_pressed("select"):
-			
-			state_buffer = state
-			state = State.FLOATING
-	if state == State.FLOATING:
-		if event.is_action_pressed("select"):
-			state = state_buffer
+	if state != State.FOCUSED: return
+	if event.is_action_pressed("select"):
+		GameManager.pickup(self, parent_zone)
+	elif event.is_action_pressed("cancel"):
+		GameManager.cancel()
 
 
 func focus_enter():
-	state_buffer = state
+	if state == State.FLOATING: return
 	state = State.FOCUSED
 
 func focus_exit():
-	state = state_buffer
+	if state == State.FLOATING: return
+	state = State.ZONE
 
 func _on_mouse_entered() -> void:
 	focus_enter()
-	print("in")
 
 func _on_mouse_exited() -> void:
-	focus_exit()
-	print("out")
-
-func _on_focus_entered() -> void:
-	focus_enter()
-
-func _on_focus_exited() -> void:
 	focus_exit()
