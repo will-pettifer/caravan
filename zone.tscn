@@ -1,12 +1,12 @@
 [gd_scene load_steps=5 format=3 uid="uid://bgb0e6o5i7kn0"]
 
 [ext_resource type="Script" uid="uid://dmgdts2ih3r4x" path="res://zone.gd" id="1_prk50"]
-[ext_resource type="Texture2D" uid="uid://baabk23wxr2q1" path="res://icon.svg" id="2_llkuv"]
+[ext_resource type="Texture2D" uid="uid://bfa3emdxovbv" path="res://zone.png" id="2_llkuv"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_1i4dq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_prk50"]
-size = Vector2(293, 577)
+size = Vector2(58, 162)
 
 [node name="Zone" type="Area2D"]
 z_as_relative = false
@@ -14,11 +14,19 @@ script = ExtResource("1_prk50")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 material = SubResource("CanvasItemMaterial_1i4dq")
-position = Vector2(0.5, 0.5)
+position = Vector2(0, 65)
 shape = SubResource("RectangleShape2D_prk50")
 
-[node name="Icon" type="Sprite2D" parent="."]
-scale = Vector2(2.3, 4.5)
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+offset_left = -26.0
+offset_top = -42.0
+offset_right = 25.0
+offset_bottom = -18.0
+text = "0"
+metadata/_edit_use_anchors_ = true
+
+[node name="Zone" type="Sprite2D" parent="."]
+position = Vector2(0, 65)
 texture = ExtResource("2_llkuv")
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

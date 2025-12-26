@@ -10,7 +10,7 @@ var value: int
 var cards: Array[Card]
 
 const CARD = preload("res://card.tscn")
-const CARD_SPACING = 50
+const CARD_SPACING = 26
 
 enum Type {PLAYER, PLAYER_HAND, ENEMY, ENEMY_HAND}
 
@@ -35,28 +35,39 @@ func _input(event: InputEvent) -> void:
 
 
 func refresh():
+	value = 0
+	
 	cards = card_sort(cards)
-	var temp: Array[Card]
+	var matches: Array[Card]
 	
 	for i in cards.size():
 		for j in i:
 			if cards[i].value + cards[j].value != 10: continue
-			temp.append(cards[i])
-			temp.append(cards[j])
+			matches.append(cards[i])
+			matches.append(cards[j])
 	
 	var i = 0
 	var j = 0
-	while i < temp.size():
-		temp[i].position = Vector2(-15, j * CARD_SPACING)
-		temp[i + 1].position = Vector2(15, j * CARD_SPACING)
+	while i < matches.size():
+		value += 20
+		
+		matches[i].position = Vector2(-CARD_SPACING / 2, j * CARD_SPACING)
+		matches[i + 1].position = Vector2(CARD_SPACING / 2, j * CARD_SPACING)
 		i += 2
 		j += 1
 	
 	for card in cards:
-		if temp.has(card): continue
+		if matches.has(card): continue
+		value += card.value
+		
 		card.position = Vector2(0, j * CARD_SPACING)
 		i += 1
 		j += 1
+	
+	if type != Type.PLAYER_HAND and type != Type.ENEMY_HAND:
+		$RichTextLabel.text = str(value)
+	else:
+		$RichTextLabel.text = ""
 
 func card_sort(cards: Array[Card]):
 	var output: Array[Card]
@@ -67,7 +78,7 @@ func card_sort(cards: Array[Card]):
 			continue
 		
 		for j in output.size():
-			if cards[i].value < output[j].value:
+			if cards[i].value > output[j].value:
 				output.insert(j, cards[i])
 				break
 			if j == output.size() - 1:

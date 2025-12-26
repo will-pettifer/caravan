@@ -6,11 +6,14 @@
 
 [node name="Zone" parent="." instance=ExtResource("1_0xm2m")]
 z_index = -4
-position = Vector2(216, 383)
+position = Vector2(1105, 414)
 type = 1
 
 [node name="Zone2" parent="." instance=ExtResource("1_0xm2m")]
-position = Vector2(904, 375)
+position = Vector2(636, 365)
 
 [node name="Zone3" parent="." instance=ExtResource("1_0xm2m")]
-position = Vector2(561, 378)
+position = Vector2(545, 367)
+
+[node name="Zone4" parent="." instance=ExtResource("1_0xm2m")]
+position = Vector2(449, 368)

@@ -33,8 +33,6 @@ func _input(event: InputEvent) -> void:
 	if state != State.FOCUSED: return
 	if event.is_action_pressed("select"):
 		GameManager.pickup(self, parent_zone)
-	elif event.is_action_pressed("cancel"):
-		GameManager.cancel()
 
 
 func focus_enter():

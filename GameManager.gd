@@ -12,6 +12,11 @@ func _process(delta: float) -> void:
 		cooldown -= delta
 
 
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("cancel"):
+		cancel()
+
+
 func pickup(card: Card, zone: Zone):
 	if held_card or\
 	cooldown > 0 or\
@@ -23,8 +28,17 @@ func pickup(card: Card, zone: Zone):
 	card.state = Card.State.FLOATING
 	card.z_index = 10
 	card.reparent(self)
-	zone.cards.erase(card)
 	cooldown = COOLDOWN
+
+
+func cancel():
+	if !held_card: return
+	
+	held_card.state = Card.State.ZONE
+	held_card.z_index = 2
+	held_card.reparent(held_card.parent_zone)
+	held_card.parent_zone.refresh()
+	held_card = null
 
 
 func drop(zone: Zone):
@@ -33,12 +47,17 @@ func drop(zone: Zone):
 	zone.type != Zone.Type.PLAYER:
 		return
 	
-	held_card.reparent(zone)
-	zone.cards.append(held_card)
-	zone.refresh()
 	held_card.state = Card.State.ZONE
 	held_card.z_index = 2
+	held_card.parent_zone.cards.erase(held_card)
 	held_card.parent_zone.refresh()
-	held_card.parent_zone = zone
+	held_card.reparent(zone)
+	
+	if held_card.parent_zone != zone:
+		held_card.parent_zone = zone
+		# Next turn
+	
+	zone.cards.append(held_card)
+	zone.refresh()
 	held_card = null
 	cooldown = COOLDOWN
