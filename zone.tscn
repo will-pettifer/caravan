@@ -6,27 +6,20 @@
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_1i4dq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_prk50"]
-size = Vector2(58, 162)
+size = Vector2(58, 152)
 
 [node name="Zone" type="Area2D"]
 z_as_relative = false
 script = ExtResource("1_prk50")
+type = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 material = SubResource("CanvasItemMaterial_1i4dq")
-position = Vector2(0, 65)
+position = Vector2(0, 60)
 shape = SubResource("RectangleShape2D_prk50")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="."]
-offset_left = -26.0
-offset_top = -42.0
-offset_right = 25.0
-offset_bottom = -18.0
-text = "0"
-metadata/_edit_use_anchors_ = true
-
 [node name="Zone" type="Sprite2D" parent="."]
-position = Vector2(0, 65)
+position = Vector2(0, 60)
 texture = ExtResource("2_llkuv")
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

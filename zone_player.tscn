@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://dyfaj33f4ou10"]
+
+[ext_resource type="PackedScene" uid="uid://bgb0e6o5i7kn0" path="res://zone.tscn" id="1_xkteg"]
+
+[node name="Zone" instance=ExtResource("1_xkteg")]
+type = 0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="." index="2"]
+offset_left = -29.0
+offset_top = -40.0
+offset_right = 11.0
+offset_bottom = -16.0
+text = "0"

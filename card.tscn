@@ -4,47 +4,47 @@
 [ext_resource type="Texture2D" uid="uid://wj4upme3y50j" path="res://numbers.png" id="2_rjlel"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
-size = Vector2(26, 26)
+size = Vector2(24, 24)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_rjlel"]
 atlas = ExtResource("2_rjlel")
-region = Rect2(0, 0, 26, 26)
+region = Rect2(0, 0, 24, 24)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_q5obu"]
 atlas = ExtResource("2_rjlel")
-region = Rect2(27, 0, 26, 26)
+region = Rect2(25, 0, 24, 24)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_e484p"]
 atlas = ExtResource("2_rjlel")
-region = Rect2(54, 0, 26, 26)
+region = Rect2(50, 0, 24, 24)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fpac0"]
 atlas = ExtResource("2_rjlel")
-region = Rect2(81, 0, 26, 26)
+region = Rect2(75, 0, 24, 24)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1i5pp"]
 atlas = ExtResource("2_rjlel")
-region = Rect2(108, 0, 26, 26)
+region = Rect2(100, 0, 24, 24)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_pjytt"]
 atlas = ExtResource("2_rjlel")
-region = Rect2(135, 0, 26, 26)
+region = Rect2(125, 0, 24, 24)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_b4rk6"]
 atlas = ExtResource("2_rjlel")
-region = Rect2(162, 0, 26, 26)
+region = Rect2(150, 0, 24, 24)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6lcat"]
 atlas = ExtResource("2_rjlel")
-region = Rect2(189, 0, 26, 26)
+region = Rect2(175, 0, 24, 24)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ut1v0"]
 atlas = ExtResource("2_rjlel")
-region = Rect2(216, 0, 26, 26)
+region = Rect2(200, 0, 24, 24)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vno60"]
 atlas = ExtResource("2_rjlel")
-region = Rect2(243, 0, 26, 26)
+region = Rect2(225, 0, 24, 24)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_is7yf"]
 animations = [{

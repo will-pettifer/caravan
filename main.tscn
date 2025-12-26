@@ -1,19 +1,35 @@
-[gd_scene load_steps=2 format=3 uid="uid://yedp7ci4l25n"]
+[gd_scene load_steps=5 format=3 uid="uid://yedp7ci4l25n"]
 
 [ext_resource type="PackedScene" uid="uid://bgb0e6o5i7kn0" path="res://zone.tscn" id="1_0xm2m"]
+[ext_resource type="PackedScene" uid="uid://dyfaj33f4ou10" path="res://zone_player.tscn" id="2_h2yge"]
+[ext_resource type="PackedScene" uid="uid://cxcdnctyjxcf6" path="res://zone_enemy.tscn" id="3_h2yge"]
+[ext_resource type="PackedScene" uid="uid://6732h1aidchu" path="res://zone_enemy_hand.tscn" id="4_1bvp3"]
 
 [node name="Main" type="Node2D"]
 
-[node name="Zone" parent="." instance=ExtResource("1_0xm2m")]
+[node name="Game" type="Node2D" parent="."]
+
+[node name="Zone" parent="Game" instance=ExtResource("1_0xm2m")]
 z_index = -4
-position = Vector2(1105, 414)
-type = 1
+position = Vector2(524, 222)
 
-[node name="Zone2" parent="." instance=ExtResource("1_0xm2m")]
-position = Vector2(636, 365)
+[node name="Zone3" parent="Game" instance=ExtResource("2_h2yge")]
+position = Vector2(218, 220)
 
-[node name="Zone3" parent="." instance=ExtResource("1_0xm2m")]
-position = Vector2(545, 367)
+[node name="Zone4" parent="Game" instance=ExtResource("2_h2yge")]
+position = Vector2(306, 220)
 
-[node name="Zone4" parent="." instance=ExtResource("1_0xm2m")]
-position = Vector2(449, 368)
+[node name="Zone5" parent="Game" instance=ExtResource("2_h2yge")]
+position = Vector2(392, 221)
+
+[node name="Zone6" parent="Game" instance=ExtResource("3_h2yge")]
+position = Vector2(218, 141)
+
+[node name="Zone7" parent="Game" instance=ExtResource("3_h2yge")]
+position = Vector2(306, 141)
+
+[node name="Zone8" parent="Game" instance=ExtResource("3_h2yge")]
+position = Vector2(391, 141)
+
+[node name="Zone" parent="." instance=ExtResource("4_1bvp3")]
+position = Vector2(85, 142)

@@ -10,13 +10,14 @@ var value: int
 var cards: Array[Card]
 
 const CARD = preload("res://card.tscn")
-const CARD_SPACING = 26
+const CARD_SPACING: float = 24
+const CARDS_OFFSET = Vector2(0, 0)
 
 enum Type {PLAYER, PLAYER_HAND, ENEMY, ENEMY_HAND}
 
 
 func _ready() -> void:
-	if type != Type.PLAYER_HAND: return
+	if type != Type.PLAYER_HAND and type != Type.ENEMY_HAND: return
 	
 	for i in 10:
 		var card: Card = CARD.instantiate()
@@ -51,8 +52,12 @@ func refresh():
 	while i < matches.size():
 		value += 20
 		
-		matches[i].position = Vector2(-CARD_SPACING / 2, j * CARD_SPACING)
-		matches[i + 1].position = Vector2(CARD_SPACING / 2, j * CARD_SPACING)
+		if type == Type.PLAYER or type == Type.PLAYER_HAND:
+			matches[i].position = Vector2(-CARD_SPACING / 2, j * CARD_SPACING)
+			matches[i + 1].position = Vector2(CARD_SPACING / 2, j * CARD_SPACING)
+		elif type == Type.ENEMY or type == Type.ENEMY_HAND:
+			matches[i].position = CARDS_OFFSET - Vector2(CARD_SPACING / 2, j * CARD_SPACING)
+			matches[i + 1].position = CARDS_OFFSET - Vector2(-CARD_SPACING / 2, j * CARD_SPACING)
 		i += 2
 		j += 1
 	
@@ -60,14 +65,15 @@ func refresh():
 		if matches.has(card): continue
 		value += card.value
 		
-		card.position = Vector2(0, j * CARD_SPACING)
+		if type == Type.PLAYER or type == Type.PLAYER_HAND:
+			card.position = Vector2(0, j * CARD_SPACING)
+		elif type == Type.ENEMY or type == Type.ENEMY_HAND:
+			card.position = CARDS_OFFSET - Vector2(0, j * CARD_SPACING)
 		i += 1
 		j += 1
 	
 	if type != Type.PLAYER_HAND and type != Type.ENEMY_HAND:
 		$RichTextLabel.text = str(value)
-	else:
-		$RichTextLabel.text = ""
 
 func card_sort(cards: Array[Card]):
 	var output: Array[Card]

@@ -19,9 +19,9 @@ func _input(event: InputEvent) -> void:
 
 func pickup(card: Card, zone: Zone):
 	if held_card or\
-	cooldown > 0 or\
-	zone.type == Zone.Type.ENEMY or\
-	zone.type ==  Zone.Type.ENEMY_HAND:
+	cooldown > 0:# or\
+	#zone.type == Zone.Type.ENEMY or\
+	#zone.type ==  Zone.Type.ENEMY_HAND:
 		return
 	
 	held_card = card
@@ -43,8 +43,8 @@ func cancel():
 
 func drop(zone: Zone):
 	if !held_card or\
-	cooldown > 0 or\
-	zone.type != Zone.Type.PLAYER:
+	cooldown > 0:# or\
+	#zone.type != Zone.Type.PLAYER:
 		return
 	
 	held_card.state = Card.State.ZONE
