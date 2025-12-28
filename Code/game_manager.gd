@@ -5,6 +5,7 @@ var held_card: Card
 var cooldown: float
 var main
 var zones: Array
+var zone_nodes: Array
 var values: Array[int]
 
 const COOLDOWN: float = 0.01
@@ -21,6 +22,22 @@ func _ready() -> void:
 	for i in 10:
 		zones[3].append(i + 1)
 		zones[7].append(i + 1)
+	
+	zone_nodes.resize(8)
+	for i in 8:
+		var mod
+		match i:
+			0, 1, 2:
+				mod = "P" + str(i)
+			3:
+				mod = "PHand"
+			4, 5, 6:
+				mod = "E" + str(i)
+			7:
+				mod = "EHand"
+		
+		var node_path = "Zone" + mod
+		zone_nodes[i] = main.get_node(node_path)
 
 
 func _process(delta: float) -> void:
@@ -83,7 +100,7 @@ func drop(zone: Zone):
 	)
 	var end = int(str(zone.name)[5])
 	move(Move.new(start, end))
-	print(evaluate_position(1))
+	print(evaluate_position())
 	
 	held_card.parent_zone = zone
 	
@@ -91,25 +108,21 @@ func drop(zone: Zone):
 	cooldown = COOLDOWN
 
 
-func setup_zone_arrays():
-	for i in 8:
-		zones[i].clear()
-		
-		var mod
-		match i:
-			0, 1, 2:
-				mod = "P" + str(i)
-			3, 4, 5:
-				mod = "E" + str(i)
-			6:
-				mod = "PHand"
-			7:
-				mod = "EHand"
-		
-		var node_path = "Zone" + mod
-		var zone = main.get_node(node_path)
-		for j in zone.cards.size():
-			zones[i].append(zone.cards[j].value)
+func enemy_move(move: Move):
+	var card = zone_nodes[move.start.x][move.start.y]
+	var end_zone = zone_nodes[move.end]
+	
+	if card.parent_zone == end_zone:
+		print("Error: AI moved into same zone")
+	
+	card.parent_zone.cards.pop_at(move.start.y)
+	card.parent_zone.refresh()
+	card.reparent(end_zone)
+	card.parent_zone = end_zone
+	end_zone.cards.append(held_card)
+	end_zone.refresh()
+	
+	move(move)
 
 
 func move_search(player: int):
@@ -122,6 +135,8 @@ func move_search(player: int):
 		if evaluate_position() * player > best_score:
 			best_move = move
 		unmove(move)
+	
+	
 
 
 func generate_moves(player: int):
@@ -137,8 +152,7 @@ func generate_moves(player: int):
 	return moves
 
 
-func evaluate_position(player: int):
-	player *= 4
+func evaluate_position():
 	var score: int = 0
 	var trading_posts: Array[int]
 	trading_posts.resize(3)
@@ -178,7 +192,6 @@ func evaluate_position(player: int):
 		score += values[i]
 	for i in range(4, 7):
 		score -= values[i]
-		print(str(i) + "///")
 	
 	return score
 
