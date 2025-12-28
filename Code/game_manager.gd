@@ -19,7 +19,7 @@ func _ready() -> void:
 		zones[i] = []
 	
 	for i in 10:
-		zones[6].append(i + 1)
+		zones[3].append(i + 1)
 		zones[7].append(i + 1)
 
 
@@ -90,37 +90,6 @@ func drop(zone: Zone):
 	cooldown = COOLDOWN
 
 
-func move(move: Move):
-	zones[move.end].append(zones[move.start.x].pop_at(move.start.y))
-	values[move.end] = calc_value(move.end)
-	values[move.start.x] = calc_value(move.start.x)
-	
-	print(zones[move.start.x])
-	print(zones[move.end])
-	print(values)
-
-func unmove(move: Move):
-	zones[move.start.x].append(zones[move.end].pop_back())
-	values[move.end] = calc_value(move.end)
-	values[move.start.x] = calc_value(move.start.x)
-
-func calc_value(id: int):
-	var value: int = 0
-	
-	for i in zones[id].size():
-		for j in i:
-			if zones[id][i] + zones[id][j] == 10:
-				value += 10
-		
-		value += zones[id][i]
-	
-	return value
-
-
-func enemy_move():
-	setup_zone_arrays()
-
-
 func setup_zone_arrays():
 	for i in 8:
 		zones[i].clear()
@@ -142,16 +111,51 @@ func setup_zone_arrays():
 			zones[i].append(zone.cards[j].value)
 
 
-func generate_moves(zones: Array): # Really broken
+func generate_moves(player: int):
 	var moves: Array[Move]
+	player *= 4
 	
-	for i in zones.size():
+	for i in range(player, player + 4):
 		for j in zones[i].size():
-			for k in 3:
+			for k in range(player, player + 3):
 				if k == i: continue
 				moves.append(Move.new(Vector2(i, j), k))
 	
 	return moves
+
+
+func evaluate_position(player: int):
+	player *= 4
+	
+	var score: int = 0
+	
+	for i in range(player, player + 3):
+		if values[i] >= 25 and values[i] <= 30:
+			score += 10
+		if values[i] >
+
+
+func move(move: Move):
+	zones[move.end].append(zones[move.start.x].pop_at(move.start.y))
+	values[move.end] = calc_value(move.end)
+	values[move.start.x] = calc_value(move.start.x)
+
+func unmove(move: Move):
+	zones[move.start.x].append(zones[move.end].pop_back())
+	values[move.end] = calc_value(move.end)
+	values[move.start.x] = calc_value(move.start.x)
+
+func calc_value(id: int):
+	var value: int = 0
+	
+	for i in zones[id].size():
+		for j in i:
+			if zones[id][i] + zones[id][j] == 10:
+				value += 10
+		
+		value += zones[id][i]
+	
+	return value
 
 
 class Move:

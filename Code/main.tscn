@@ -11,7 +11,7 @@
 [node name="Enemy" type="Node" parent="."]
 script = ExtResource("5_seput")
 
-[node name="ZoneP6Hand" parent="." instance=ExtResource("1_fdhps")]
+[node name="ZoneP3Hand" parent="." instance=ExtResource("1_fdhps")]
 z_index = -4
 position = Vector2(527, 220)
 
@@ -27,11 +27,11 @@ position = Vector2(306, 220)
 [node name="ZoneP2" parent="." instance=ExtResource("2_nlxfe")]
 position = Vector2(392, 221)
 
-[node name="ZoneE3" parent="." instance=ExtResource("3_nk7x0")]
+[node name="ZoneE4" parent="." instance=ExtResource("3_nk7x0")]
 position = Vector2(218, 141)
 
-[node name="ZoneE4" parent="." instance=ExtResource("3_nk7x0")]
+[node name="ZoneE5" parent="." instance=ExtResource("3_nk7x0")]
 position = Vector2(306, 141)
 
-[node name="ZoneE5" parent="." instance=ExtResource("3_nk7x0")]
+[node name="ZoneE6" parent="." instance=ExtResource("3_nk7x0")]
 position = Vector2(391, 141)
