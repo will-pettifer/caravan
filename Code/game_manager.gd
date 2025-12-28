@@ -35,9 +35,9 @@ func _input(event: InputEvent) -> void:
 
 func pickup(card: Card, zone: Zone):
 	if held_card \
-	or cooldown > 0 \
-	or zone.type == Zone.Type.ENEMY \
-	or zone.type ==  Zone.Type.ENEMY_HAND:
+	or cooldown > 0:# \
+	#or zone.type == Zone.Type.ENEMY \
+	#or zone.type ==  Zone.Type.ENEMY_HAND:
 		return
 	
 	held_card = card
@@ -59,8 +59,8 @@ func cancel():
 
 func drop(zone: Zone):
 	if !held_card \
-	or cooldown > 0 \
-	or zone.type != Zone.Type.PLAYER:
+	or cooldown > 0:# \
+	#or zone.type != Zone.Type.PLAYER:
 		return
 	
 	if held_card.parent_zone == zone:
@@ -83,6 +83,7 @@ func drop(zone: Zone):
 	)
 	var end = int(str(zone.name)[5])
 	move(Move.new(start, end))
+	print(evaluate_position(1))
 	
 	held_card.parent_zone = zone
 	
@@ -111,6 +112,18 @@ func setup_zone_arrays():
 			zones[i].append(zone.cards[j].value)
 
 
+func move_search(player: int):
+	var moves = generate_moves(player)
+	var best_move
+	var best_score = -INF
+	
+	for move in moves:
+		move(move)
+		if evaluate_position() * player > best_score:
+			best_move = move
+		unmove(move)
+
+
 func generate_moves(player: int):
 	var moves: Array[Move]
 	player *= 4
@@ -126,13 +139,48 @@ func generate_moves(player: int):
 
 func evaluate_position(player: int):
 	player *= 4
-	
 	var score: int = 0
+	var trading_posts: Array[int]
+	trading_posts.resize(3)
 	
-	for i in range(player, player + 3):
-		if values[i] >= 25 and values[i] <= 30:
-			score += 10
-		if values[i] >
+	for i in 3:
+		if values[i + 4] - values[i] == 5:
+			trading_posts[i] = 1
+			score += 1
+			continue
+		if values[i] - values[i + 4] == 5:
+			trading_posts[i] = -1
+			score += -1
+			continue
+		
+		var is_p0_valid = values[i] >= 25 and values[i] <= 30
+		var is_p1_valid = values[i + 4] >= 25 and values[i + 4] <= 30
+		
+		if is_p0_valid and (!is_p1_valid or values[i + 4] < values[i]):
+			trading_posts[i] = 1
+			score += 1
+			continue
+		if is_p1_valid and (!is_p0_valid or values[i] < values[i + 4]):
+			trading_posts[i] = -1
+			score += -1
+			continue
+		
+		trading_posts[i] = 0
+	
+	if score == 3: return INF
+	if score == -3: return -INF
+	if trading_posts[0] != 0 and trading_posts[1] != 0 and trading_posts[2] != 0:
+		return score * INF
+	
+	score *= 100
+	
+	for i in range(0, 3):
+		score += values[i]
+	for i in range(4, 7):
+		score -= values[i]
+		print(str(i) + "///")
+	
+	return score
 
 
 func move(move: Move):
@@ -140,10 +188,12 @@ func move(move: Move):
 	values[move.end] = calc_value(move.end)
 	values[move.start.x] = calc_value(move.start.x)
 
+
 func unmove(move: Move):
 	zones[move.start.x].append(zones[move.end].pop_back())
 	values[move.end] = calc_value(move.end)
 	values[move.start.x] = calc_value(move.start.x)
+
 
 func calc_value(id: int):
 	var value: int = 0
