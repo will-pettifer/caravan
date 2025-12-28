@@ -1,0 +1,37 @@
+[gd_scene load_steps=6 format=3 uid="uid://yedp7ci4l25n"]
+
+[ext_resource type="PackedScene" uid="uid://bgb0e6o5i7kn0" path="res://Code/zone.tscn" id="1_fdhps"]
+[ext_resource type="PackedScene" uid="uid://dyfaj33f4ou10" path="res://Code/zone_player.tscn" id="2_nlxfe"]
+[ext_resource type="PackedScene" uid="uid://cxcdnctyjxcf6" path="res://Code/zone_enemy.tscn" id="3_nk7x0"]
+[ext_resource type="PackedScene" uid="uid://6732h1aidchu" path="res://Code/zone_enemy_hand.tscn" id="4_l41nr"]
+[ext_resource type="Script" uid="uid://bj8xgucrpc25l" path="res://Code/enemy.gd" id="5_seput"]
+
+[node name="Main" type="Node2D"]
+
+[node name="Enemy" type="Node" parent="."]
+script = ExtResource("5_seput")
+
+[node name="ZoneP6Hand" parent="." instance=ExtResource("1_fdhps")]
+z_index = -4
+position = Vector2(527, 220)
+
+[node name="ZoneE7Hand" parent="." instance=ExtResource("4_l41nr")]
+position = Vector2(85, 142)
+
+[node name="ZoneP0" parent="." instance=ExtResource("2_nlxfe")]
+position = Vector2(218, 220)
+
+[node name="ZoneP1" parent="." instance=ExtResource("2_nlxfe")]
+position = Vector2(306, 220)
+
+[node name="ZoneP2" parent="." instance=ExtResource("2_nlxfe")]
+position = Vector2(392, 221)
+
+[node name="ZoneE3" parent="." instance=ExtResource("3_nk7x0")]
+position = Vector2(218, 141)
+
+[node name="ZoneE4" parent="." instance=ExtResource("3_nk7x0")]
+position = Vector2(306, 141)
+
+[node name="ZoneE5" parent="." instance=ExtResource("3_nk7x0")]
+position = Vector2(391, 141)

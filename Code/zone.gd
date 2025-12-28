@@ -5,13 +5,13 @@ class_name Zone
 
 @export var type: Type
 
-var focused: bool = false
+var focused := false
 var value: int
 var cards: Array[Card]
 
-const CARD = preload("res://card.tscn")
+const CARD := preload("res://Code/card.tscn")
 const CARD_SPACING: float = 24
-const CARDS_OFFSET = Vector2(0, 0)
+const CARDS_OFFSET := Vector2(0, 0)
 
 enum Type {PLAYER, PLAYER_HAND, ENEMY, ENEMY_HAND}
 
@@ -37,15 +37,14 @@ func _input(event: InputEvent) -> void:
 
 func refresh():
 	value = 0
-	
-	cards = card_sort(cards)
+	var _cards = card_sort(cards)
 	var matches: Array[Card]
 	
-	for i in cards.size():
+	for i in _cards.size():
 		for j in i:
-			if cards[i].value + cards[j].value != 10: continue
-			matches.append(cards[i])
-			matches.append(cards[j])
+			if _cards[i].value + _cards[j].value != 10: continue
+			matches.append(_cards[i])
+			matches.append(_cards[j])
 	
 	var i = 0
 	var j = 0
@@ -61,7 +60,7 @@ func refresh():
 		i += 2
 		j += 1
 	
-	for card in cards:
+	for card in _cards:
 		if matches.has(card): continue
 		value += card.value
 		
@@ -74,6 +73,7 @@ func refresh():
 	
 	if type != Type.PLAYER_HAND and type != Type.ENEMY_HAND:
 		$RichTextLabel.text = str(value)
+
 
 func card_sort(cards: Array[Card]):
 	var output: Array[Card]

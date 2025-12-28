@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://bgb0e6o5i7kn0"]
 
-[ext_resource type="Script" uid="uid://dmgdts2ih3r4x" path="res://zone.gd" id="1_prk50"]
-[ext_resource type="Texture2D" uid="uid://bfa3emdxovbv" path="res://zone.png" id="2_llkuv"]
+[ext_resource type="Script" uid="uid://dmgdts2ih3r4x" path="res://Code/zone.gd" id="1_867yq"]
+[ext_resource type="Texture2D" uid="uid://bfa3emdxovbv" path="res://Art/zone.png" id="2_hgsdp"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_1i4dq"]
 
@@ -10,7 +10,7 @@ size = Vector2(58, 152)
 
 [node name="Zone" type="Area2D"]
 z_as_relative = false
-script = ExtResource("1_prk50")
+script = ExtResource("1_867yq")
 type = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -20,7 +20,7 @@ shape = SubResource("RectangleShape2D_prk50")
 
 [node name="Zone" type="Sprite2D" parent="."]
 position = Vector2(0, 60)
-texture = ExtResource("2_llkuv")
+texture = ExtResource("2_hgsdp")
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
