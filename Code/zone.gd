@@ -105,3 +105,10 @@ func _on_mouse_entered() -> void:
 
 func _on_mouse_exited() -> void:
 	focus_exit()
+
+
+func print():
+	var card_array: Array
+	for card in cards:
+		card_array.append(card.value)
+	print(card_array)

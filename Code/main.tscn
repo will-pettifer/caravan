@@ -1,10 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://yedp7ci4l25n"]
+[gd_scene load_steps=8 format=3 uid="uid://yedp7ci4l25n"]
 
 [ext_resource type="PackedScene" uid="uid://bgb0e6o5i7kn0" path="res://Code/zone.tscn" id="1_fdhps"]
 [ext_resource type="PackedScene" uid="uid://dyfaj33f4ou10" path="res://Code/zone_player.tscn" id="2_nlxfe"]
 [ext_resource type="PackedScene" uid="uid://cxcdnctyjxcf6" path="res://Code/zone_enemy.tscn" id="3_nk7x0"]
 [ext_resource type="PackedScene" uid="uid://6732h1aidchu" path="res://Code/zone_enemy_hand.tscn" id="4_l41nr"]
 [ext_resource type="Script" uid="uid://bj8xgucrpc25l" path="res://Code/enemy.gd" id="5_seput"]
+[ext_resource type="Texture2D" uid="uid://ik8k2md14hv8" path="res://Art/background.png" id="6_nlxfe"]
+[ext_resource type="Texture2D" uid="uid://bfa3emdxovbv" path="res://Art/zone.png" id="7_nk7x0"]
 
 [node name="Main" type="Node2D"]
 
@@ -25,13 +27,46 @@ position = Vector2(218, 220)
 position = Vector2(306, 220)
 
 [node name="ZoneP2" parent="." instance=ExtResource("2_nlxfe")]
-position = Vector2(392, 221)
+position = Vector2(393, 220)
 
 [node name="ZoneE4" parent="." instance=ExtResource("3_nk7x0")]
-position = Vector2(218, 141)
+position = Vector2(218, 140)
 
 [node name="ZoneE5" parent="." instance=ExtResource("3_nk7x0")]
-position = Vector2(306, 141)
+position = Vector2(306, 140)
 
 [node name="ZoneE6" parent="." instance=ExtResource("3_nk7x0")]
-position = Vector2(391, 141)
+position = Vector2(393, 140)
+
+[node name="Background" type="Sprite2D" parent="."]
+z_index = -10
+position = Vector2(323, 182.00002)
+scale = Vector2(0.365, 0.365)
+texture = ExtResource("6_nlxfe")
+
+[node name="Zone" type="Sprite2D" parent="."]
+z_index = -2
+position = Vector2(354, 180)
+rotation = 1.5707964
+texture = ExtResource("7_nk7x0")
+
+[node name="Zone2" type="Sprite2D" parent="."]
+z_index = -2
+position = Vector2(257, 180)
+rotation = 1.5707964
+texture = ExtResource("7_nk7x0")
+
+[node name="EndMessage" type="Sprite2D" parent="."]
+z_index = -10
+position = Vector2(307, 180)
+rotation = 1.5707964
+texture = ExtResource("7_nk7x0")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="EndMessage"]
+offset_left = -23.999992
+offset_top = 71.0
+offset_right = 118.00001
+offset_bottom = 119.0
+rotation = -1.5707964
+horizontal_alignment = 1
+vertical_alignment = 1
