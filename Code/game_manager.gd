@@ -1,13 +1,18 @@
+class_name GameManager
 extends Node
 
 
 var held_card: Card
 var cooldown: float
 var timer: float = 0
-var main
+var main: Main
 var zones: Array
 var zone_nodes: Array
 var values: Array[int]
+var overlapping_objects: Array
+var is_paused: bool = false
+var p0# := Willow.new(self, 0)
+var p1 := Willow.new(self, 1)
 
 const COOLDOWN: float = 0.01
 
@@ -15,6 +20,7 @@ const COOLDOWN: float = 0.01
 func _ready() -> void:
 	main = get_tree().current_scene
 	
+	# Set up the zones, and add 1-10
 	values.resize(8)
 	zones.resize(8)
 	for i in zones.size():
@@ -24,6 +30,7 @@ func _ready() -> void:
 		zones[3].append(i + 1)
 		zones[7].append(i + 1)
 	
+	# Link the abstract zones to the visual nodes
 	zone_nodes.resize(8)
 	for i in 8:
 		var mod
@@ -38,26 +45,54 @@ func _ready() -> void:
 				mod = "E7Hand"
 		
 		var node_path = "Zone" + mod
-		zone_nodes[i] = main.get_node(node_path)
+		zone_nodes[i] = get_node(node_path)
 
 
 func _process(delta: float) -> void:
-	if cooldown > 0:
-		cooldown -= delta
-	
+	# Timer for game-end countdown (a bit rubbish)
+	if timer == 0:
+		enemy_move(p1.move_search())
 	timer -= delta
 	if timer > 0 and timer < 1:
-		get_tree().reload_current_scene()
+		main.restart()
 
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("cancel"):
+	if is_paused: return
+	if event.is_action_pressed("select"):
+		if overlapping_objects.size() == 0:
+			cancel()
+			return
+		
+		var zone: Zone
+		var card: Card
+		for obj in overlapping_objects:
+			if obj is Zone:
+				zone = obj
+			elif obj is Card:
+				card = obj
+		
+		if !zone:
+			cancel()
+			return
+		if held_card and card:
+			if held_card != card:
+				cancel()
+				pickup(card, zone)
+				return
+		if held_card:
+			drop(zone)
+			return
+		if card:
+			pickup(card, zone)
+			return
+		
+	elif event.is_action_pressed("cancel"):
 		cancel()
 
 
 func pickup(card: Card, zone: Zone):
 	if held_card \
-	or cooldown > 0 \
 	or zone.type == Zone.Type.ENEMY \
 	or zone.type ==  Zone.Type.ENEMY_HAND:
 		return
@@ -66,6 +101,7 @@ func pickup(card: Card, zone: Zone):
 	card.state = Card.State.FLOATING
 	card.z_index = 10
 	card.reparent(self)
+	card.timer = 0
 	cooldown = COOLDOWN
 
 
@@ -81,11 +117,11 @@ func cancel():
 
 func drop(zone: Zone):
 	if !held_card \
-	or cooldown > 0 \
-	or zone.type != Zone.Type.PLAYER:
+	or zone.type == Zone.Type.ENEMY \
+	or zone.type ==  Zone.Type.ENEMY_HAND:
 		return
 	
-	if held_card.parent_zone == zone:
+	if held_card.parent_zone == zone or zone.type == Zone.Type.PLAYER_HAND:
 		cancel()
 		return
 	
@@ -104,39 +140,41 @@ func drop(zone: Zone):
 		card_index
 	)
 	var end = int(str(zone.name)[5])
-	move(Move.new(start, end))
-	try_end_game()
-	
-	enemy_move(move_search(1))
-	try_end_game()
 	
 	held_card.parent_zone = zone
-	
 	held_card = null
 	cooldown = COOLDOWN
+	
+	# Apply Player and p1 moves
+	move(Move.new(start, end))
+	if try_end_game():
+		return
+	enemy_move(p1.move_search())
+	if try_end_game():
+		return
 
 
 func try_end_game():
+	# This is all quite rubbish
 	var win_check = win_check()
-	var label = main.get_node("EndMessage/RichTextLabel") as RichTextLabel
+	var label = get_node("EndMessage/RichTextLabel") as RichTextLabel
 	
 	if win_check == INF:
 		label.text = "You win!"
 	elif win_check == -INF:
 		label.text = "You lose!"
 	else:
-		return
+		return false
 	
 	label.get_parent().z_index = 20
 	timer = 10
+	
+	return true
 
 
 func enemy_move(move: Move):
 	var card = zone_nodes[move.start.x].cards[move.start.y]
 	var end_zone = zone_nodes[move.end]
-	
-	if card.parent_zone == end_zone:
-		print("Error: AI moved into same zone")
 	
 	card.parent_zone.cards.pop_at(move.start.y)
 	card.parent_zone.refresh()
@@ -146,61 +184,6 @@ func enemy_move(move: Move):
 	end_zone.refresh()
 	
 	move(move)
-
-
-func move_search(player: int):
-	var moves = generate_moves(player)
-	var best_move
-	var best_score = -INF
-	
-	match player:
-		0:
-			player = 1
-		1:
-			player = -1
-	
-	print_state()
-	print(moves.size())
-	print("++\n")
-	for move in moves:
-		move(move)
-		move.print()
-		var eval = evaluate_position() * player
-		print(eval)
-		if eval > best_score:
-			best_score = eval
-			best_move = move
-		unmove(move)
-	
-	return best_move
-
-
-func generate_moves(player: int):
-	var moves: Array[Move]
-	player *= 4
-	
-	for i in range(player, player + 4):
-		for j in zones[i].size():
-			for k in range(player, player + 3):
-				if k == i: continue
-				moves.append(Move.new(Vector2(i, j), k))
-	
-	return moves
-
-
-func evaluate_position():
-	var score = win_check() * 100
-	
-	var p0 = 0
-	var p1 = 0
-	for i in range(0, 3):
-		p0 += 30 - abs(30 - values[i])
-	for i in range(4, 7):
-		p1 += 30 - abs(30 - values[i])
-	
-	score += p0 + p1 * -1
-	
-	return score
 
 
 func win_check():
@@ -279,15 +262,3 @@ func print_state():
 		print("  :: " + str(cards) + " :: " + str(zone_nodes[i].value))
 	
 	print("\n")
-
-
-class Move:
-	var start: Vector2i
-	var end: int
-	
-	func _init(start: Vector2i, end: int):
-		self.start = start
-		self.end = end
-	
-	func print():
-		print(str(start) + " :: " + str(end))

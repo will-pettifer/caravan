@@ -1,10 +1,10 @@
-extends Area2D
-
 class_name Zone
+extends Area2D
 
 
 @export var type: Type
 
+var game_manager: GameManager
 var focused := false
 var value: int
 var cards: Array[Card]
@@ -17,6 +17,8 @@ enum Type {PLAYER, PLAYER_HAND, ENEMY, ENEMY_HAND}
 
 
 func _ready() -> void:
+	game_manager = get_parent()
+	
 	if type != Type.PLAYER_HAND and type != Type.ENEMY_HAND: return
 	
 	for i in 10:
@@ -27,12 +29,6 @@ func _ready() -> void:
 		card.parent_zone = self
 	
 	refresh()
-
-
-func _input(event: InputEvent) -> void:
-	if !focused: return
-	if event.is_action_pressed("select") :
-		GameManager.drop(self)
 
 
 func refresh():
@@ -96,9 +92,11 @@ func card_sort(cards: Array[Card]):
 
 func focus_enter():
 	focused = true
+	game_manager.overlapping_objects.append(self)
 
 func focus_exit():
 	focused = false
+	game_manager.overlapping_objects.erase(self)
 
 func _on_mouse_entered() -> void:
 	focus_enter()

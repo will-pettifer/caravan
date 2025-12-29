@@ -1,47 +1,49 @@
-class_name Card
-
 extends Area2D
+class_name Card
 
 
 @export var offset: Vector2 = Vector2(0, 0)
 
+var game_manager: GameManager
 var state: State
 var value: int = 1
 var parent_zone: Zone
+var is_focused: bool
+var timer: float = 0
 
 enum State {
 	ZONE,			# In the zone
-	FOCUSED,		# Cursor hovering over
+	SELECTED,		# Cursor hovering over
 	FLOATING		# Held by the cursor
 }
 
 
 func _ready() -> void:
+	game_manager = get_parent().get_parent()
+	
 	$AnimatedSprite2D.animation = "default"
 	$AnimatedSprite2D.frame = value - 1
 
 
 func _process(delta: float) -> void:
+	timer += delta
 	match state:
 		State.FLOATING:
-			position = get_viewport().get_mouse_position() - offset
+			#position = get_viewport().get_mouse_position() - offset
+			rotation = sin(timer * 3) / 2
+			$AnimatedSprite2D.frame = value + 9
 		State.ZONE:
-			pass
-
-
-func _input(event: InputEvent) -> void:
-	if state != State.FOCUSED: return
-	if event.is_action_pressed("select"):
-		GameManager.pickup(self, parent_zone)
+			rotation = 0
+			$AnimatedSprite2D.frame = value - 1
 
 
 func focus_enter():
-	if state == State.FLOATING: return
-	state = State.FOCUSED
+	is_focused = true
+	game_manager.overlapping_objects.append(self)
 
 func focus_exit():
-	if state == State.FLOATING: return
-	state = State.ZONE
+	is_focused = false
+	game_manager.overlapping_objects.erase(self)
 
 func _on_mouse_entered() -> void:
 	focus_enter()
