@@ -1,61 +1,26 @@
-[gd_scene load_steps=7 format=3 uid="uid://cqyun64jyofbe"]
+[gd_scene load_steps=8 format=3 uid="uid://cqyun64jyofbe"]
 
 [ext_resource type="Script" uid="uid://21p5u4nqlgfj" path="res://Code/game_manager.gd" id="1_pa13t"]
 [ext_resource type="PackedScene" uid="uid://bgb0e6o5i7kn0" path="res://Code/zone.tscn" id="2_y4il6"]
 [ext_resource type="PackedScene" uid="uid://6732h1aidchu" path="res://Code/zone_enemy_hand.tscn" id="3_em7n5"]
 [ext_resource type="PackedScene" uid="uid://dyfaj33f4ou10" path="res://Code/zone_player.tscn" id="4_4gscd"]
 [ext_resource type="PackedScene" uid="uid://cxcdnctyjxcf6" path="res://Code/zone_enemy.tscn" id="5_w14lw"]
+[ext_resource type="Theme" uid="uid://cpp4wdw68utdq" path="res://Art/ui_theme.tres" id="6_em7n5"]
 [ext_resource type="Script" uid="uid://80af0byr3amx" path="res://Code/pause_menu.gd" id="6_y4il6"]
 
 [node name="GameManager" type="Node"]
 script = ExtResource("1_pa13t")
-
-[node name="ZoneP3Hand" parent="." instance=ExtResource("2_y4il6")]
-z_index = -4
-position = Vector2(527, 220)
-
-[node name="ZoneE7Hand" parent="." instance=ExtResource("3_em7n5")]
-position = Vector2(85, 142)
-
-[node name="ZoneP0" parent="." instance=ExtResource("4_4gscd")]
-position = Vector2(218, 220)
-
-[node name="ZoneP1" parent="." instance=ExtResource("4_4gscd")]
-position = Vector2(306, 220)
-
-[node name="ZoneP2" parent="." instance=ExtResource("4_4gscd")]
-position = Vector2(393, 220)
-
-[node name="ZoneE4" parent="." instance=ExtResource("5_w14lw")]
-position = Vector2(218, 140)
-
-[node name="ZoneE5" parent="." instance=ExtResource("5_w14lw")]
-position = Vector2(306, 140)
-
-[node name="ZoneE6" parent="." instance=ExtResource("5_w14lw")]
-position = Vector2(393, 140)
-
-[node name="EndMessage" type="Sprite2D" parent="."]
-z_index = -10
-position = Vector2(307, 180)
-rotation = 1.5707964
-
-[node name="RichTextLabel" type="RichTextLabel" parent="EndMessage"]
-offset_left = -23.999992
-offset_top = 71.0
-offset_right = 118.00001
-offset_bottom = 119.0
-rotation = -1.5707964
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="PauseMenu" type="CenterContainer" parent="."]
 z_index = 20
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -1.0
+offset_right = -1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("6_em7n5")
 script = ExtResource("6_y4il6")
 
 [node name="Main" type="PanelContainer" parent="PauseMenu"]
@@ -122,9 +87,55 @@ alignment = 2
 layout_mode = 2
 text = "Back"
 
+[node name="EndMessage" type="PanelContainer" parent="PauseMenu"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PauseMenu/EndMessage"]
+layout_mode = 2
+
+[node name="ZoneP3Hand" parent="." instance=ExtResource("2_y4il6")]
+z_index = -4
+position = Vector2(539, 220)
+
+[node name="ZoneE7Hand" parent="." instance=ExtResource("3_em7n5")]
+position = Vector2(99, 140)
+
+[node name="ZoneP0" parent="." instance=ExtResource("4_4gscd")]
+position = Vector2(219, 220)
+
+[node name="ZoneP1" parent="." instance=ExtResource("4_4gscd")]
+position = Vector2(319, 220)
+
+[node name="ZoneP2" parent="." instance=ExtResource("4_4gscd")]
+position = Vector2(419, 220)
+
+[node name="ZoneE4" parent="." instance=ExtResource("5_w14lw")]
+position = Vector2(219, 140)
+
+[node name="ZoneE5" parent="." instance=ExtResource("5_w14lw")]
+position = Vector2(319, 140)
+
+[node name="ZoneE6" parent="." instance=ExtResource("5_w14lw")]
+position = Vector2(419, 140)
+
+[node name="MenuButton" type="PanelContainer" parent="."]
+offset_left = 5.0
+offset_top = 320.0
+offset_right = 62.0
+offset_bottom = 355.0
+theme = ExtResource("6_em7n5")
+
+[node name="Menu" type="Button" parent="MenuButton"]
+layout_mode = 2
+text = "Menu
+"
+
 [connection signal="pressed" from="PauseMenu/Main/VBoxContainer/StartGame" to="PauseMenu" method="_on_start_game_pressed"]
 [connection signal="item_selected" from="PauseMenu/Main/VBoxContainer/SelectOpponent/OptionButton" to="PauseMenu" method="_on_option_button_item_selected"]
 [connection signal="toggled" from="PauseMenu/Main/VBoxContainer/PlayerStarts" to="PauseMenu" method="_on_player_starts_toggled"]
 [connection signal="pressed" from="PauseMenu/Main/VBoxContainer/Tutorial" to="PauseMenu" method="_on_tutorial_pressed"]
 [connection signal="pressed" from="PauseMenu/Main/VBoxContainer/Quit" to="PauseMenu" method="_on_quit_pressed"]
 [connection signal="pressed" from="PauseMenu/Rules/VBoxContainer/HBoxContainer/Back" to="PauseMenu" method="_on_back_pressed"]
+[connection signal="pressed" from="MenuButton/Menu" to="PauseMenu" method="_on_button_pressed"]
+[connection signal="pressed" from="MenuButton/Menu" to="PauseMenu" method="_on_menu_pressed"]

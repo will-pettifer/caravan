@@ -68,7 +68,7 @@ func refresh():
 		j += 1
 	
 	if type != Type.PLAYER_HAND and type != Type.ENEMY_HAND:
-		$RichTextLabel.text = str(value)
+		$Panel/Label.text = str(value)
 
 
 func card_sort(cards: Array[Card]):

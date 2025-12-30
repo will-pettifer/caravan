@@ -12,7 +12,6 @@ rotation = -3.1415927
 [node name="Zone" parent="." index="1"]
 position = Vector2(0, -60)
 
-[node name="RichTextLabel" parent="." index="2"]
-offset_top = 16.0
-offset_bottom = 40.0
-metadata/_edit_use_anchors_ = true
+[node name="Panel" parent="." index="2"]
+offset_top = 14.0
+offset_bottom = 41.0
