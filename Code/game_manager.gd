@@ -10,9 +10,11 @@ var zones: Array
 var zone_nodes: Array
 var values: Array[int]
 var overlapping_objects: Array
-var is_paused: bool = false
+var is_paused: bool = true
 var p0# := Willow.new(self, 0)
 var p1 := Willow.new(self, 1)
+var is_player_start: bool = true
+var is_game_started: bool = false
 
 const COOLDOWN: float = 0.01
 
@@ -50,8 +52,6 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	# Timer for game-end countdown (a bit rubbish)
-	if timer == 0:
-		enemy_move(p1.move_search())
 	timer -= delta
 	if timer > 0 and timer < 1:
 		main.restart()
@@ -89,6 +89,18 @@ func _input(event: InputEvent) -> void:
 		
 	elif event.is_action_pressed("cancel"):
 		cancel()
+
+
+func start_game():
+	if !is_game_started:
+		is_paused = false
+		is_game_started = true
+		$PauseMenu.get_node("Main/VBoxContainer/StartGame").text = "Restart Game"
+		if !is_player_start:
+			enemy_move(p1.move_search())
+	else:
+		pass
+		# restart game
 
 
 func pickup(card: Card, zone: Zone):
