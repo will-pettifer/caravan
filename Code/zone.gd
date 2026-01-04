@@ -8,6 +8,8 @@ var game_manager: GameManager
 var focused := false
 var value: int
 var cards: Array[Card]
+var is_winning = false
+var timer = 0
 
 const CARD := preload("res://Code/card.tscn")
 const CARD_SPACING: float = 24
@@ -29,6 +31,12 @@ func _ready() -> void:
 		card.parent_zone = self
 	
 	refresh()
+
+
+func _process(delta: float) -> void:
+	timer += delta
+	if is_winning:
+		$Panel.rotation = sin(timer * 3) / 20
 
 
 func refresh():
@@ -88,6 +96,24 @@ func card_sort(cards: Array[Card]):
 				break
 	
 	return output
+
+
+func win():
+	if !is_winning:
+		timer = 0
+		is_winning = true
+	
+	var style = load("res://Art/ui_plain.tres").duplicate()
+	style.texture = load("res://Art/ui3.png")
+	$Panel.add_theme_stylebox_override("panel", style)
+
+
+func lose():
+	is_winning = false
+	
+	$Panel.rotation = 0
+	
+	$Panel.remove_theme_stylebox_override("panel")
 
 
 func focus_enter():

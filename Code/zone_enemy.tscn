@@ -9,9 +9,10 @@ type = 2
 position = Vector2(0, -60)
 rotation = -3.1415927
 
-[node name="Zone" parent="." index="1"]
+[node name="Sprite2D" parent="." index="1"]
 position = Vector2(0, -60)
 
 [node name="Panel" parent="." index="2"]
-offset_top = 14.0
-offset_bottom = 41.0
+offset_top = 18.0
+offset_bottom = 45.0
+rotation = 0.0

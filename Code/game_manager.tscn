@@ -11,7 +11,9 @@
 [node name="GameManager" type="Node"]
 script = ExtResource("1_pa13t")
 
-[node name="PauseMenu" type="CenterContainer" parent="."]
+[node name="UILayer" type="CanvasLayer" parent="."]
+
+[node name="PauseMenu" type="CenterContainer" parent="UILayer"]
 z_index = 20
 anchors_preset = 15
 anchor_right = 1.0
@@ -23,119 +25,142 @@ grow_vertical = 2
 theme = ExtResource("6_em7n5")
 script = ExtResource("6_y4il6")
 
-[node name="Main" type="PanelContainer" parent="PauseMenu"]
+[node name="Main" type="PanelContainer" parent="UILayer/PauseMenu"]
 visible = false
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PauseMenu/Main"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UILayer/PauseMenu/Main"]
 layout_mode = 2
 
-[node name="StartGame" type="Button" parent="PauseMenu/Main/VBoxContainer"]
+[node name="StartGame" type="Button" parent="UILayer/PauseMenu/Main/VBoxContainer"]
 layout_mode = 2
 text = "Start Game"
 
-[node name="SelectOpponent" type="HBoxContainer" parent="PauseMenu/Main/VBoxContainer"]
+[node name="SelectPlayer" type="HBoxContainer" parent="UILayer/PauseMenu/Main/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PauseMenu/Main/VBoxContainer/SelectOpponent"]
+[node name="Label" type="Label" parent="UILayer/PauseMenu/Main/VBoxContainer/SelectPlayer"]
 layout_mode = 2
-text = "  Select opponent:   "
+text = "  Select player 1:   "
 
-[node name="OptionButton" type="OptionButton" parent="PauseMenu/Main/VBoxContainer/SelectOpponent"]
+[node name="P1Select" type="OptionButton" parent="UILayer/PauseMenu/Main/VBoxContainer/SelectPlayer"]
+layout_mode = 2
+selected = 0
+item_count = 2
+popup/item_0/text = "Human"
+popup/item_0/id = 1
+popup/item_1/text = "Willow"
+popup/item_1/id = 0
+
+[node name="SelectOpponent" type="HBoxContainer" parent="UILayer/PauseMenu/Main/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UILayer/PauseMenu/Main/VBoxContainer/SelectOpponent"]
+layout_mode = 2
+text = "  Select player 2:   "
+
+[node name="P2Select" type="OptionButton" parent="UILayer/PauseMenu/Main/VBoxContainer/SelectOpponent"]
 layout_mode = 2
 selected = 0
 item_count = 1
 popup/item_0/text = "Willow"
 popup/item_0/id = 0
 
-[node name="PlayerStarts" type="CheckButton" parent="PauseMenu/Main/VBoxContainer"]
+[node name="PlayerStarts" type="CheckButton" parent="UILayer/PauseMenu/Main/VBoxContainer"]
 layout_mode = 2
-button_pressed = true
-text = "Player starts:"
+text = "Player 1 starts:"
 
-[node name="Tutorial" type="Button" parent="PauseMenu/Main/VBoxContainer"]
+[node name="Tutorial" type="Button" parent="UILayer/PauseMenu/Main/VBoxContainer"]
 layout_mode = 2
 text = "Tutorial"
 
-[node name="Quit" type="Button" parent="PauseMenu/Main/VBoxContainer"]
+[node name="Quit" type="Button" parent="UILayer/PauseMenu/Main/VBoxContainer"]
 layout_mode = 2
 text = "Quit"
 
-[node name="Rules" type="PanelContainer" parent="PauseMenu"]
+[node name="Rules" type="PanelContainer" parent="UILayer/PauseMenu"]
 visible = false
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PauseMenu/Rules"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UILayer/PauseMenu/Rules"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PauseMenu/Rules/VBoxContainer"]
+[node name="Label" type="Label" parent="UILayer/PauseMenu/Rules/VBoxContainer"]
+custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
-text = "Players take it in turns to place or move cards into one of three zones
-that face off. The game ends when each face off has a valid hand. The
-player with the most valid hands wins. A valid hand is either:
+text = "The players are competing to sell as many lots as they can. They take it in turns either moving a card from their hand into one of their three lots, or moving a card from one lot to another. If 2 cards add up to 10, they add up to 20. The game ends when there is one valid lot at each of the three trading posts. Valid lots are:
 
-  -  Between 25 and 30, inclusive, and higher than the opposing hand, or,
-  -  Exactly 5 below the opposing hand.
+- From 25 to 30, inclusive, and higher than the opposing caravan, or,
+- Exactly 5 below the opposing lot.
 
-If the game ends, it will reset after 10 seconds."
+The winner is whoever sold the most lots."
+autowrap_mode = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="PauseMenu/Rules/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="UILayer/PauseMenu/Rules/VBoxContainer"]
 layout_mode = 2
 alignment = 2
 
-[node name="Back" type="Button" parent="PauseMenu/Rules/VBoxContainer/HBoxContainer"]
+[node name="Back" type="Button" parent="UILayer/PauseMenu/Rules/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "Back"
 
-[node name="EndMessage" type="PanelContainer" parent="PauseMenu"]
+[node name="EndMessage" type="PanelContainer" parent="UILayer/PauseMenu"]
 visible = false
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PauseMenu/EndMessage"]
+[node name="Label" type="Label" parent="UILayer/PauseMenu/EndMessage"]
 layout_mode = 2
 
-[node name="ZoneP3Hand" parent="." instance=ExtResource("2_y4il6")]
-z_index = -4
-position = Vector2(539, 220)
-
-[node name="ZoneE7Hand" parent="." instance=ExtResource("3_em7n5")]
-position = Vector2(99, 140)
-
-[node name="ZoneP0" parent="." instance=ExtResource("4_4gscd")]
-position = Vector2(219, 220)
-
-[node name="ZoneP1" parent="." instance=ExtResource("4_4gscd")]
-position = Vector2(319, 220)
-
-[node name="ZoneP2" parent="." instance=ExtResource("4_4gscd")]
-position = Vector2(419, 220)
-
-[node name="ZoneE4" parent="." instance=ExtResource("5_w14lw")]
-position = Vector2(219, 140)
-
-[node name="ZoneE5" parent="." instance=ExtResource("5_w14lw")]
-position = Vector2(319, 140)
-
-[node name="ZoneE6" parent="." instance=ExtResource("5_w14lw")]
-position = Vector2(419, 140)
-
-[node name="MenuButton" type="PanelContainer" parent="."]
-offset_left = 5.0
-offset_top = 320.0
-offset_right = 62.0
-offset_bottom = 355.0
+[node name="MenuButton" type="PanelContainer" parent="UILayer"]
+offset_left = 8.0
+offset_top = 403.0
+offset_right = 69.0
+offset_bottom = 442.0
 theme = ExtResource("6_em7n5")
 
-[node name="Menu" type="Button" parent="MenuButton"]
+[node name="Menu" type="Button" parent="UILayer/MenuButton"]
 layout_mode = 2
 text = "Menu
 "
 
-[connection signal="pressed" from="PauseMenu/Main/VBoxContainer/StartGame" to="PauseMenu" method="_on_start_game_pressed"]
-[connection signal="item_selected" from="PauseMenu/Main/VBoxContainer/SelectOpponent/OptionButton" to="PauseMenu" method="_on_option_button_item_selected"]
-[connection signal="toggled" from="PauseMenu/Main/VBoxContainer/PlayerStarts" to="PauseMenu" method="_on_player_starts_toggled"]
-[connection signal="pressed" from="PauseMenu/Main/VBoxContainer/Tutorial" to="PauseMenu" method="_on_tutorial_pressed"]
-[connection signal="pressed" from="PauseMenu/Main/VBoxContainer/Quit" to="PauseMenu" method="_on_quit_pressed"]
-[connection signal="pressed" from="PauseMenu/Rules/VBoxContainer/HBoxContainer/Back" to="PauseMenu" method="_on_back_pressed"]
-[connection signal="pressed" from="MenuButton/Menu" to="PauseMenu" method="_on_button_pressed"]
-[connection signal="pressed" from="MenuButton/Menu" to="PauseMenu" method="_on_menu_pressed"]
+[node name="AIOutput" type="PanelContainer" parent="UILayer"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="UILayer/AIOutput"]
+layout_mode = 2
+
+[node name="ZoneP3Hand" parent="." instance=ExtResource("2_y4il6")]
+z_index = -4
+position = Vector2(600, 280)
+
+[node name="ZoneE7Hand" parent="." instance=ExtResource("3_em7n5")]
+position = Vector2(200, 170)
+
+[node name="ZoneP0" parent="." instance=ExtResource("4_4gscd")]
+position = Vector2(300, 280)
+
+[node name="ZoneP1" parent="." instance=ExtResource("4_4gscd")]
+position = Vector2(400, 280)
+
+[node name="ZoneP2" parent="." instance=ExtResource("4_4gscd")]
+position = Vector2(500, 280)
+
+[node name="ZoneE4" parent="." instance=ExtResource("5_w14lw")]
+position = Vector2(300, 170)
+
+[node name="ZoneE5" parent="." instance=ExtResource("5_w14lw")]
+position = Vector2(400, 170)
+
+[node name="ZoneE6" parent="." instance=ExtResource("5_w14lw")]
+position = Vector2(500, 170)
+
+[connection signal="pressed" from="UILayer/PauseMenu/Main/VBoxContainer/StartGame" to="UILayer/PauseMenu" method="_on_start_game_pressed"]
+[connection signal="item_selected" from="UILayer/PauseMenu/Main/VBoxContainer/SelectPlayer/P1Select" to="UILayer/PauseMenu" method="_on_p_1_select_item_selected"]
+[connection signal="item_selected" from="UILayer/PauseMenu/Main/VBoxContainer/SelectOpponent/P2Select" to="UILayer/PauseMenu" method="_on_p_2_select_item_selected"]
+[connection signal="toggled" from="UILayer/PauseMenu/Main/VBoxContainer/PlayerStarts" to="UILayer/PauseMenu" method="_on_player_starts_toggled"]
+[connection signal="pressed" from="UILayer/PauseMenu/Main/VBoxContainer/Tutorial" to="UILayer/PauseMenu" method="_on_tutorial_pressed"]
+[connection signal="pressed" from="UILayer/PauseMenu/Main/VBoxContainer/Quit" to="UILayer/PauseMenu" method="_on_quit_pressed"]
+[connection signal="pressed" from="UILayer/PauseMenu/Rules/VBoxContainer/HBoxContainer/Back" to="UILayer/PauseMenu" method="_on_back_pressed"]
+[connection signal="pressed" from="UILayer/MenuButton/Menu" to="UILayer/PauseMenu" method="_on_button_pressed"]
+[connection signal="pressed" from="UILayer/MenuButton/Menu" to="UILayer/PauseMenu" method="_on_menu_pressed"]

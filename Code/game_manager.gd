@@ -11,9 +11,10 @@ var zone_nodes: Array
 var values: Array[int]
 var overlapping_objects: Array
 var is_paused: bool = true
-var p0# := Willow.new(self, 0)
+var is_input_disabled = false
+var p0
 var p1 := Willow.new(self, 1)
-var is_player_start: bool = true
+var is_player_start: bool = false
 var is_game_started: bool = false
 var is_game_end: bool = false
 
@@ -52,7 +53,7 @@ func _ready() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if is_paused or is_game_end: return
+	if is_paused or is_game_end or is_input_disabled: return
 	if event.is_action_pressed("select"):
 		if overlapping_objects.size() == 0:
 			cancel()
@@ -86,13 +87,21 @@ func _input(event: InputEvent) -> void:
 
 
 func start_game():
-	if !is_game_started:
-		is_paused = false
-		is_game_started = true
-		if !is_player_start:
-			enemy_move(p1.move_search())
-	else:
+	if is_game_started:
 		restart()
+		return
+	
+	is_paused = false
+	is_game_started = true
+	
+	if !p0:
+		if !is_player_start:
+			enemy_move(p1.random())
+		
+	else:
+		is_input_disabled = true
+		
+		# new thread for ai
 
 
 func restart():
@@ -122,7 +131,7 @@ func cancel():
 	held_card.parent_zone.refresh()
 	held_card = null
 	
-	$PauseMenu/EndMessage.visible = false
+	$UILayer/PauseMenu/EndMessage.visible = false
 
 
 func drop(zone: Zone):
@@ -157,9 +166,39 @@ func drop(zone: Zone):
 	
 	# Apply Player and p1 moves
 	move(Move.new(start, end))
+	var winning_posts
+	
+	winning_posts = posts_win_check()
+	for i in winning_posts.size():
+		match winning_posts[i]:
+			1:
+				zone_nodes[i].win()
+				zone_nodes[i + 4].lose()
+			-1:
+				zone_nodes[i + 4].win()
+				zone_nodes[i].lose()
+			0:
+				zone_nodes[i].lose()
+				zone_nodes[i + 4].lose()
+	
 	if try_end_game():
 		return
+	
 	enemy_move(p1.move_search())
+	
+	winning_posts = posts_win_check()
+	for i in winning_posts.size():
+		match winning_posts[i]:
+			1:
+				zone_nodes[i].win()
+				zone_nodes[i + 4].lose()
+			-1:
+				zone_nodes[i + 4].win()
+				zone_nodes[i].lose()
+			0:
+				zone_nodes[i].lose()
+				zone_nodes[i + 4].lose()
+	
 	if try_end_game():
 		return
 
@@ -168,9 +207,9 @@ func try_end_game():
 	var win_check = win_check()
 	
 	if win_check == INF:
-		$PauseMenu.end(true)
+		$UILayer/PauseMenu.end(true)
 	elif win_check == -INF:
-		$PauseMenu.end(false)
+		$UILayer/PauseMenu.end(false)
 	else:
 		return false
 	
@@ -229,6 +268,34 @@ func win_check():
 		return score * INF
 	
 	return score
+
+
+func posts_win_check():
+	var trading_posts: Array[int]
+	trading_posts.resize(3)
+	
+	for i in trading_posts.size():
+		
+		if values[i + 4] - values[i] == 5:
+			trading_posts[i] = 1
+			continue
+		if values[i] - values[i + 4] == 5:
+			trading_posts[i] = -1
+			continue
+		
+		var is_p0_valid = values[i] >= 25 and values[i] <= 30
+		var is_p1_valid = values[i + 4] >= 25 and values[i + 4] <= 30
+		
+		if is_p0_valid and (!is_p1_valid or values[i + 4] < values[i]):
+			trading_posts[i] = 1
+			continue
+		if is_p1_valid and (!is_p0_valid or values[i] < values[i + 4]):
+			trading_posts[i] = -1
+			continue
+		
+		trading_posts[i] = 0
+	
+	return trading_posts
 
 
 func move(move: Move):

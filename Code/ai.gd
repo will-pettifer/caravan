@@ -10,6 +10,8 @@ func _init(game_manager, player) -> void:
 	self.game_manager = game_manager
 	self.player = player
 
+@abstract func random()
+
 @abstract func move_search()
 
 @abstract func generate_moves()

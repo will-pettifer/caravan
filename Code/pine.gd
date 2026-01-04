@@ -1,4 +1,4 @@
-class_name Willow
+class_name Pine
 extends AI
 
 
@@ -9,8 +9,7 @@ func random():
 	return moves[rand]
 
 
-func move_search():
-	var player = self.player
+func move_search(player = self.player):
 	var moves = generate_moves()
 	var best_move
 	var best_score = -INF
@@ -23,6 +22,7 @@ func move_search():
 	
 	for move in moves:
 		game_manager.move(move)
+		move_search(player * -1)
 		var eval = evaluate_position() * player
 		if eval > best_score:
 			best_score = eval

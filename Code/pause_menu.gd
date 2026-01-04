@@ -5,7 +5,7 @@ var game_manager: GameManager
 
 
 func _ready() -> void:
-	game_manager = get_parent()
+	game_manager = get_parent().get_parent()
 	
 	visible = true
 	$Main.visible = true
@@ -77,3 +77,17 @@ func _on_quit_pressed() -> void:
 
 func _on_menu_pressed() -> void:
 	esc()
+
+
+func _on_p_1_select_item_selected(index: int) -> void:
+	match index:
+		0:
+			game_manager.p0 = null
+		1:
+			game_manager.p0 = Willow.new(game_manager, 0)
+
+
+func _on_p_2_select_item_selected(index: int) -> void:
+	match index:
+		0:
+			game_manager.p1 = Willow.new(game_manager, 1)

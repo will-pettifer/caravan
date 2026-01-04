@@ -18,7 +18,7 @@ material = SubResource("CanvasItemMaterial_1i4dq")
 position = Vector2(0, 60)
 shape = SubResource("RectangleShape2D_prk50")
 
-[node name="Zone" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, 60)
 texture = ExtResource("2_hgsdp")
 
