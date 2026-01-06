@@ -81,8 +81,6 @@ func _on_menu_pressed() -> void:
 
 func _on_p_1_select_item_selected(index: int) -> void:
 	match index:
-		0:
-			game_manager.p0 = null
 		1:
 			game_manager.p0 = Willow.new(game_manager, 0)
 

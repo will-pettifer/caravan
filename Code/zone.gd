@@ -21,13 +21,15 @@ enum Type {PLAYER, PLAYER_HAND, ENEMY, ENEMY_HAND}
 func _ready() -> void:
 	game_manager = get_parent()
 	
+	cards.resize(10)
+	
 	if type != Type.PLAYER_HAND and type != Type.ENEMY_HAND: return
 	
 	for i in 10:
 		var card: Card = CARD.instantiate()
 		card.value = i + 1
 		add_child(card)
-		cards.append(card)
+		cards[i] = card
 		card.parent_zone = self
 	
 	refresh()
@@ -41,14 +43,14 @@ func _process(delta: float) -> void:
 
 func refresh():
 	value = 0
-	var _cards = card_sort(cards)
 	var matches: Array[Card]
 	
-	for i in _cards.size():
+	for i in cards.size():
 		for j in i:
-			if _cards[i].value + _cards[j].value != 10: continue
-			matches.append(_cards[i])
-			matches.append(_cards[j])
+			if !cards[i] or !cards[j]: continue
+			if cards[i].value + cards[j].value != 10: continue
+			matches.append(cards[i])
+			matches.append(cards[j])
 	
 	var i = 0
 	var j = 0
@@ -64,7 +66,8 @@ func refresh():
 		i += 2
 		j += 1
 	
-	for card in _cards:
+	for card in cards:
+		if !card: continue
 		if matches.has(card): continue
 		value += card.value
 		
@@ -77,25 +80,6 @@ func refresh():
 	
 	if type != Type.PLAYER_HAND and type != Type.ENEMY_HAND:
 		$Panel/Label.text = str(value)
-
-
-func card_sort(cards: Array[Card]):
-	var output: Array[Card]
-	
-	for i in cards.size():
-		if output.size() == 0:
-			output.append(cards[i])
-			continue
-		
-		for j in output.size():
-			if cards[i].value > output[j].value:
-				output.insert(j, cards[i])
-				break
-			if j == output.size() - 1:
-				output.append(cards[i])
-				break
-	
-	return output
 
 
 func win():

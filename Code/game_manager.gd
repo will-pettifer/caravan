@@ -2,21 +2,35 @@ class_name GameManager
 extends Node
 
 
-var held_card: Card
+@onready var pause_menu = $UILayer/PauseMenu
+@onready var end_message = $UILayer/PauseMenu/EndMessage
+@onready var ai_out = $UILayer/AIOutput
+@onready var ai_out_label = $UILayer/AIOutput/Label
+
 var cooldown: float
 var timer: float = 0
+
+var held_card: Card
 var main: Main
-var zones: Array
+var p0: AI
+var p1 = Willow.new(self, 1)
+
+var position: String
+var positions: Array[String]
 var zone_nodes: Array
 var values: Array[int]
 var overlapping_objects: Array
+var ai_outcomes: Array
+
 var is_paused: bool = true
 var is_input_disabled = false
-var p0
-var p1 := Willow.new(self, 1)
 var is_player_start: bool = false
 var is_game_started: bool = false
 var is_game_end: bool = false
+
+var thread: Thread
+var mutex: Mutex
+var semaphore: Semaphore
 
 const COOLDOWN: float = 0.01
 
@@ -24,15 +38,12 @@ const COOLDOWN: float = 0.01
 func _ready() -> void:
 	main = get_tree().current_scene
 	
-	# Set up the zones, and add 1-10
-	values.resize(8)
-	zones.resize(8)
-	for i in zones.size():
-		zones[i] = []
+	thread = Thread.new()
+	mutex = Mutex.new()
+	semaphore = Semaphore.new()
 	
-	for i in 10:
-		zones[3].append(i + 1)
-		zones[7].append(i + 1)
+	# Set up the zones, and add 1-10
+	set_up_position()
 	
 	# Link the abstract zones to the visual nodes
 	zone_nodes.resize(8)
@@ -51,8 +62,23 @@ func _ready() -> void:
 		var node_path = "Zone" + mod
 		zone_nodes[i] = get_node(node_path)
 
+func set_up_position():
+	position = "0".repeat(80)
+	
+	for i in 2:
+		for j in 10:
+			position[(i * 40 - 10) + j] = char(j + 49)
+	
+	values.clear()
+	values.resize(8)
+	
+	positions.clear()
+
 
 func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("next"):
+		print(print_pos())
+		semaphore.post()
 	if is_paused or is_game_end or is_input_disabled: return
 	if event.is_action_pressed("select"):
 		if overlapping_objects.size() == 0:
@@ -86,6 +112,10 @@ func _input(event: InputEvent) -> void:
 		cancel()
 
 
+func _exit_tree():
+	thread.wait_to_finish()
+
+
 func start_game():
 	if is_game_started:
 		restart()
@@ -94,18 +124,78 @@ func start_game():
 	is_paused = false
 	is_game_started = true
 	
-	if !p0:
+	if p0:
+		is_input_disabled = true
+		ai_out.visible = true
+		thread.start(ai_loop)
+	else:
 		if !is_player_start:
 			enemy_move(p1.random())
-		
-	else:
-		is_input_disabled = true
-		
-		# new thread for ai
 
 
 func restart():
 	main.restart()
+
+
+func ai_loop():
+	var game_count = 100
+	for i in game_count:
+		set_up_position()
+		ai_turn(p0.random())
+		ai_turn(p1.random())
+		
+		while true:
+			if ai_turn(p0.move_search()): break
+			#semaphore.wait()
+			
+			if ai_turn(p1.move_search()): break
+			#semaphore.wait()
+		
+		call_deferred("print_ai_outcomes")
+
+
+func ai_turn(move: Move):
+	move(move)
+	
+	var win_check = win_check()
+	if win_check == 0.1:
+		ai_outcomes.append("0")
+		return true
+	if win_check == INF:
+		ai_outcomes.append("1")
+		return true
+	if win_check == -INF:
+		ai_outcomes.append("2")
+		return true
+	
+	return false
+
+
+func print_ai_outcomes():
+	var draw_count = 0
+	var p0_count = 0
+	var p1_count = 0
+	
+	for out in ai_outcomes:
+		match out:
+			"0": draw_count += 1
+			"1": p0_count += 1
+			"2": p1_count += 1
+	
+	var out = str(p0_count) + " | " + str(draw_count) + " | " + str(p1_count) + "\n\n"
+	
+	var size = ai_outcomes.size()
+	if size > 3: size = 3
+	var i = size
+	while i > 0:
+		if ai_outcomes[-i] == "0":
+			out += "draw!\n"
+		else:
+			out += ("player " + ai_outcomes[-i] + " wins!\n")
+		
+		i -= 1
+	
+	ai_out_label.text = out
 
 
 func pickup(card: Card, zone: Zone):
@@ -131,7 +221,7 @@ func cancel():
 	held_card.parent_zone.refresh()
 	held_card = null
 	
-	$UILayer/PauseMenu/EndMessage.visible = false
+	end_message.visible = false
 
 
 func drop(zone: Zone):
@@ -148,17 +238,15 @@ func drop(zone: Zone):
 	held_card.z_index = 2
 	
 	var card_index = held_card.parent_zone.cards.find(held_card)
-	held_card.parent_zone.cards.pop_at(card_index)
+	held_card.parent_zone.cards[card_index] = null
 	held_card.parent_zone.refresh()
 	held_card.reparent(zone)
-	zone.cards.append(held_card)
+	if zone.cards[card_index]: print("ERROR: Tried to move into occupied zone")
+	zone.cards[card_index] = held_card
 	zone.refresh()
 	
-	var start = Vector2i(
-		int(str(held_card.parent_zone.name)[5]),
-		card_index
-	)
-	var end = int(str(zone.name)[5])
+	var start = int(str(held_card.parent_zone.name)[5]) * 10 + card_index
+	var end = int(str(zone.name)[5]) * 10 + card_index
 	
 	held_card.parent_zone = zone
 	held_card = null
@@ -166,27 +254,17 @@ func drop(zone: Zone):
 	
 	# Apply Player and p1 moves
 	move(Move.new(start, end))
-	var winning_posts
-	
-	winning_posts = posts_win_check()
-	for i in winning_posts.size():
-		match winning_posts[i]:
-			1:
-				zone_nodes[i].win()
-				zone_nodes[i + 4].lose()
-			-1:
-				zone_nodes[i + 4].win()
-				zone_nodes[i].lose()
-			0:
-				zone_nodes[i].lose()
-				zone_nodes[i + 4].lose()
-	
+	refresh_posts()
 	if try_end_game():
 		return
 	
 	enemy_move(p1.move_search())
-	
-	winning_posts = posts_win_check()
+	refresh_posts()
+	if try_end_game():
+		return
+
+func refresh_posts():
+	var winning_posts = posts_win_check()
 	for i in winning_posts.size():
 		match winning_posts[i]:
 			1:
@@ -198,18 +276,15 @@ func drop(zone: Zone):
 			0:
 				zone_nodes[i].lose()
 				zone_nodes[i + 4].lose()
-	
-	if try_end_game():
-		return
 
 
 func try_end_game():
 	var win_check = win_check()
 	
 	if win_check == INF:
-		$UILayer/PauseMenu.end(true)
+		pause_menu.end(true)
 	elif win_check == -INF:
-		$UILayer/PauseMenu.end(false)
+		pause_menu.end(false)
 	else:
 		return false
 	
@@ -219,21 +294,30 @@ func try_end_game():
 
 
 func enemy_move(move: Move):
-	var card = zone_nodes[move.start.x].cards[move.start.y]
-	var end_zone = zone_nodes[move.end]
-	
-	card.parent_zone.cards.pop_at(move.start.y)
+	var card = zone_nodes[move.start / 10].cards[move.start % 10]
+	var end_zone = zone_nodes[move.end / 10]
+	card.parent_zone.cards[move.start % 10] = null
 	card.parent_zone.refresh()
 	card.reparent(end_zone)
 	card.parent_zone = end_zone
-	end_zone.cards.append(card)
+	if end_zone.cards[move.end % 10]: print("ERROR: Tried to move into occupied zone")
+	end_zone.cards[move.end % 10] = card
 	end_zone.refresh()
 	
 	move(move)
 
 
 func win_check():
+	var draw_counter = 0
+	for pos in positions:
+		if position == pos:
+			draw_counter += 1
+	
+	if draw_counter > 3:
+		return 0.1
+	
 	var score: int = 0
+	
 	var trading_posts: Array[int]
 	trading_posts.resize(3)
 	
@@ -299,40 +383,42 @@ func posts_win_check():
 
 
 func move(move: Move):
-	zones[move.end].append(zones[move.start.x].pop_at(move.start.y))
-	values[move.end] = calc_value(move.end)
-	values[move.start.x] = calc_value(move.start.x)
+	position[move.end] = position[move.start]
+	position[move.start] = str(0)
+	values[move.end / 10] = calc_value(move.end)
+	values[move.start / 10] = calc_value(move.start)
+	
+	positions.append(position)
 
 
 func unmove(move: Move):
-	zones[move.start.x].insert(move.start.y, zones[move.end].pop_back())
-	values[move.end] = calc_value(move.end)
-	values[move.start.x] = calc_value(move.start.x)
+	position[move.start] = position[move.end]
+	position[move.end] = str(0)
+	values[move.end / 10] = calc_value(move.end)
+	values[move.start / 10] = calc_value(move.start)
+	
+	positions.pop_back()
 
 
 func calc_value(id: int):
 	var value: int = 0
+	var zone = (id / 10) * 10
 	
-	for i in zones[id].size():
+	for i in 10:
 		for j in i:
-			if zones[id][i] + zones[id][j] == 10:
+			if (ord(position[zone + i]) - 48) + (ord(position[zone + j]) - 48) == 10 \
+			and position[zone + i] != "0" and position[zone + j] != "0":
 				value += 10
 		
-		value += zones[id][i]
+		value += ord(position[zone + i]) - 48
 	
 	return value
 
 
-func print_state():
-	print("\n===[ State ]===")
+func print_pos():
+	var out = ""
 	
-	for i in zones.size():
-		var cards: Array
-		
-		for card in zone_nodes[i].cards:
-			cards.append(card.value)
-		
-		print(str(i) + " :: " + str(zones[i]) + " :: " + str(values[i]))
-		print("  :: " + str(cards) + " :: " + str(zone_nodes[i].value))
+	for i in 8:
+		out += position.substr(i * 10, 10) + " : " + str(values[i]) + "\n"
 	
-	print("\n")
+	return out

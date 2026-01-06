@@ -2,14 +2,8 @@ class_name Pine
 extends AI
 
 
-func random():
-	var moves = generate_moves()
-	var rand = randi() % moves.size()
-	
-	return moves[rand]
-
-
-func move_search(player = self.player):
+func move_search():
+	var player = self.player
 	var moves = generate_moves()
 	var best_move
 	var best_score = -INF
@@ -22,33 +16,24 @@ func move_search(player = self.player):
 	
 	for move in moves:
 		game_manager.move(move)
-		move_search(player * -1)
 		var eval = evaluate_position() * player
-		if eval > best_score:
+		
+		if eval >= best_score:
 			best_score = eval
 			best_move = move
+		
 		game_manager.unmove(move)
 	
 	return best_move
 
 
-func generate_moves():
-	var player = self.player
-	var moves: Array[Move]
-	player *= 4
-	
-	for i in range(player, player + 4):
-		for j in game_manager.zones[i].size():
-			for k in range(player, player + 3):
-				if k == i: continue
-				moves.append(Move.new(Vector2(i, j), k))
-	
-	return moves
-
-
 func evaluate_position():
 	var player = self.player
-	var score = game_manager.win_check() * 100
+	var score = game_manager.win_check()
+	
+	if score == 0.1: return 0
+	
+	score *= 100
 	
 	var p0 = 0
 	var p1 = 0

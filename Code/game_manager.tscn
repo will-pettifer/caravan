@@ -72,7 +72,7 @@ text = "Player 1 starts:"
 
 [node name="Tutorial" type="Button" parent="UILayer/PauseMenu/Main/VBoxContainer"]
 layout_mode = 2
-text = "Tutorial"
+text = "Rules"
 
 [node name="Quit" type="Button" parent="UILayer/PauseMenu/Main/VBoxContainer"]
 layout_mode = 2
@@ -88,10 +88,12 @@ layout_mode = 2
 [node name="Label" type="Label" parent="UILayer/PauseMenu/Rules/VBoxContainer"]
 custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
-text = "The players are competing to sell as many lots as they can. They take it in turns either moving a card from their hand into one of their three lots, or moving a card from one lot to another. If 2 cards add up to 10, they add up to 20. The game ends when there is one valid lot at each of the three trading posts. Valid lots are:
+text = "The players compete to sell as many lots as they can. They take it in turns either moving a card from their caravan into one of their three lots, or moving a card from one lot to another. If 2 cards add up to 10, they add up to 20. The game ends when there is one valid lot at each of the three trading posts. Valid lots are:
 
-- From 25 to 30, inclusive, and higher than the opposing caravan, or,
+- From 25 to 30, inclusive, and higher than the opposing lot, or,
 - Exactly 5 below the opposing lot.
+
+Lots that are 5 below always win.
 
 The winner is whoever sold the most lots."
 autowrap_mode = 3
@@ -124,11 +126,19 @@ text = "Menu
 "
 
 [node name="AIOutput" type="PanelContainer" parent="UILayer"]
-offset_right = 40.0
-offset_bottom = 40.0
+visible = false
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -55.0
+offset_top = 13.0
+offset_right = -12.0
+offset_bottom = 53.0
+grow_horizontal = 0
 
 [node name="Label" type="Label" parent="UILayer/AIOutput"]
 layout_mode = 2
+text = "AI Output"
 
 [node name="ZoneP3Hand" parent="." instance=ExtResource("2_y4il6")]
 z_index = -4
