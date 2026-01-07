@@ -46,11 +46,13 @@ text = "  Select player 1:   "
 [node name="P1Select" type="OptionButton" parent="UILayer/PauseMenu/Main/VBoxContainer/SelectPlayer"]
 layout_mode = 2
 selected = 0
-item_count = 2
+item_count = 3
 popup/item_0/text = "Human"
 popup/item_0/id = 1
 popup/item_1/text = "Willow"
 popup/item_1/id = 0
+popup/item_2/text = "Pine"
+popup/item_2/id = 2
 
 [node name="SelectOpponent" type="HBoxContainer" parent="UILayer/PauseMenu/Main/VBoxContainer"]
 layout_mode = 2
@@ -62,9 +64,11 @@ text = "  Select player 2:   "
 [node name="P2Select" type="OptionButton" parent="UILayer/PauseMenu/Main/VBoxContainer/SelectOpponent"]
 layout_mode = 2
 selected = 0
-item_count = 1
+item_count = 2
 popup/item_0/text = "Willow"
 popup/item_0/id = 0
+popup/item_1/text = "Pine"
+popup/item_1/id = 1
 
 [node name="PlayerStarts" type="CheckButton" parent="UILayer/PauseMenu/Main/VBoxContainer"]
 layout_mode = 2

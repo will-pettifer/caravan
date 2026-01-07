@@ -13,7 +13,7 @@ var timer: float = 0
 var held_card: Card
 var main: Main
 var p0: AI
-var p1 = Willow.new(self, 1)
+var p1 = Willow.new(self, -1)
 
 var position: String
 var positions: Array[String]
@@ -23,7 +23,7 @@ var overlapping_objects: Array
 var ai_outcomes: Array
 
 var is_paused: bool = true
-var is_input_disabled = false
+var is_input_disabled = true
 var is_player_start: bool = false
 var is_game_started: bool = false
 var is_game_end: bool = false
@@ -125,12 +125,11 @@ func start_game():
 	is_game_started = true
 	
 	if p0:
-		is_input_disabled = true
 		ai_out.visible = true
 		thread.start(ai_loop)
 	else:
-		if !is_player_start:
-			enemy_move(p1.random())
+		is_input_disabled = false
+		enemy_move(p1.random())
 
 
 func restart():
@@ -169,6 +168,22 @@ func ai_turn(move: Move):
 		return true
 	
 	return false
+
+
+func ai_opp_turn():
+	var move = p1.move_search()
+	call_deferred("something", move)
+
+
+func something(move: Move):
+	enemy_move(move)
+	refresh_posts()
+	if try_end_game():
+		return
+	
+	print(print_pos())
+	
+	is_input_disabled = false
 
 
 func print_ai_outcomes():
@@ -252,16 +267,17 @@ func drop(zone: Zone):
 	held_card = null
 	cooldown = COOLDOWN
 	
-	# Apply Player and p1 moves
 	move(Move.new(start, end))
 	refresh_posts()
 	if try_end_game():
 		return
 	
-	enemy_move(p1.move_search())
-	refresh_posts()
-	if try_end_game():
-		return
+	print(print_pos())
+	
+	is_input_disabled = true
+	
+	thread.wait_to_finish()
+	thread.start(ai_opp_turn)
 
 func refresh_posts():
 	var winning_posts = posts_win_check()
@@ -305,6 +321,7 @@ func enemy_move(move: Move):
 	end_zone.refresh()
 	
 	move(move)
+	refresh_posts()
 
 
 func win_check():
@@ -419,6 +436,8 @@ func print_pos():
 	var out = ""
 	
 	for i in 8:
-		out += position.substr(i * 10, 10) + " : " + str(values[i]) + "\n"
+		out += position.substr(i * 10, 10) + " | " + str(values[i]) + "\n"
+		if i == 3:
+			out += "-----------|---\n"
 	
 	return out

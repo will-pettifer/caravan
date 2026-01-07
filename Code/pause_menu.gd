@@ -81,11 +81,12 @@ func _on_menu_pressed() -> void:
 
 func _on_p_1_select_item_selected(index: int) -> void:
 	match index:
-		1:
-			game_manager.p0 = Willow.new(game_manager, 0)
+		0: game_manager.p0 = null
+		1: game_manager.p0 = Willow.new(game_manager, 1)
+		2: game_manager.p0 = Pine.new(game_manager, 1)
 
 
 func _on_p_2_select_item_selected(index: int) -> void:
 	match index:
-		0:
-			game_manager.p1 = Willow.new(game_manager, 1)
+		0: game_manager.p1 = Willow.new(game_manager, -1)
+		1: game_manager.p1 = Pine.new(game_manager, -1)

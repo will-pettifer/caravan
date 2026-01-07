@@ -2,21 +2,16 @@ class_name Pine
 extends AI
 
 
-func move_search():
-	var player = self.player
-	var moves = generate_moves()
+func move_search(player = self.player):
+	var moves = generate_moves(player)
 	var best_move
 	var best_score = -INF
-	
-	match player:
-		0:
-			player = 1
-		1:
-			player = -1
+	var depth = 3
 	
 	for move in moves:
 		game_manager.move(move)
-		var eval = evaluate_position() * player
+		
+		var eval = -recursive_search(-player, depth - 1)
 		
 		if eval >= best_score:
 			best_score = eval
@@ -27,8 +22,30 @@ func move_search():
 	return best_move
 
 
+func recursive_search(player, depth):
+	var win_check = game_manager.win_check()
+	if win_check == INF or win_check == -INF:
+		return win_check * player
+	
+	if depth <= 0: return evaluate_position() * player
+	
+	var moves = generate_moves(player)
+	var best_score = -INF
+	
+	for move in moves:
+		game_manager.move(move)
+		var eval
+		
+		eval = -recursive_search(-player, depth - 1)
+		
+		if eval > best_score: best_score = eval
+		
+		game_manager.unmove(move)
+	
+	return best_score
+
+
 func evaluate_position():
-	var player = self.player
 	var score = game_manager.win_check()
 	
 	if score == 0.1: return 0
