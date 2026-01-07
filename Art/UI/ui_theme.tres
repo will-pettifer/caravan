@@ -1,8 +1,8 @@
 [gd_resource type="Theme" load_steps=9 format=3 uid="uid://cpp4wdw68utdq"]
 
-[ext_resource type="FontFile" uid="uid://dj41iu7nmu3t7" path="res://NotoSerif-Regular.ttf" id="1_kj8c1"]
-[ext_resource type="Texture2D" uid="uid://dj156lq7eg3c0" path="res://Art/ui3.png" id="2_bw2s3"]
-[ext_resource type="StyleBox" uid="uid://daqxuot1thdj4" path="res://Art/ui_plain.tres" id="2_kj8c1"]
+[ext_resource type="Texture2D" uid="uid://dj156lq7eg3c0" path="res://Art/UI/ui3.png" id="2_bw2s3"]
+[ext_resource type="StyleBox" uid="uid://daqxuot1thdj4" path="res://Art/UI/ui_plain.tres" id="2_kj8c1"]
+[ext_resource type="FontFile" uid="uid://c8codt4ss2gag" path="res://Fonts/BigBlueTerm437NerdFontMono-Regular.ttf" id="3_jj451"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bw2s3"]
 content_margin_left = 4.0
@@ -77,13 +77,20 @@ Button/constants/align_to_largest_stylebox = 0
 Button/constants/h_separation = 4
 Button/constants/icon_max_width = 0
 Button/constants/outline_size = 0
-Button/font_sizes/font_size = 16
-Button/fonts/font = ExtResource("1_kj8c1")
+Button/font_sizes/font_size = 12
+Button/fonts/font = ExtResource("3_jj451")
 Button/styles/disabled = SubResource("StyleBoxFlat_bw2s3")
 Button/styles/focus = SubResource("StyleBoxTexture_jj451")
 Button/styles/hover = SubResource("StyleBoxFlat_rmqjw")
 Button/styles/normal = SubResource("StyleBoxFlat_1hi6t")
 Button/styles/pressed = SubResource("StyleBoxFlat_ygyxo")
 Label/colors/font_color = Color(0.7607843, 0.88235295, 0.93333334, 1)
-Label/fonts/font = ExtResource("1_kj8c1")
+Label/font_sizes/font_size = 12
+Label/fonts/font = ExtResource("3_jj451")
+OptionButton/font_sizes/font_size = 12
+OptionButton/fonts/font = ExtResource("3_jj451")
 PanelContainer/styles/panel = ExtResource("2_kj8c1")
+PopupMenu/font_sizes/font_separator_size = 16
+PopupMenu/font_sizes/font_size = 12
+PopupMenu/fonts/font = ExtResource("3_jj451")
+PopupMenu/styles/panel = ExtResource("2_kj8c1")

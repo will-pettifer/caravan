@@ -13,7 +13,10 @@ config_version=5
 config/name="Caravan"
 run/main_scene="uid://yedp7ci4l25n"
 config/features=PackedStringArray("4.5", "GL Compatibility")
-config/icon="res://icon.svg"
+boot_splash/bg_color=Color(0.21176471, 0.23137255, 0.28235295, 1)
+boot_splash/fullsize=false
+boot_splash/image="uid://bh5w8ado6u414"
+config/icon="uid://iuvh0mm36ru1"
 
 [display]
 

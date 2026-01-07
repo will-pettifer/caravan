@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://6732h1aidchu"]
 
-[ext_resource type="PackedScene" uid="uid://bgb0e6o5i7kn0" path="res://Code/zone.tscn" id="1_fmwtl"]
+[ext_resource type="PackedScene" uid="uid://bgb0e6o5i7kn0" path="res://Code/Zones/zone.tscn" id="1_fmwtl"]
 
 [node name="Zone" instance=ExtResource("1_fmwtl")]
 type = 3

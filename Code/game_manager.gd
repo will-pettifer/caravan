@@ -21,6 +21,8 @@ var zone_nodes: Array
 var values: Array[int]
 var overlapping_objects: Array
 var ai_outcomes: Array
+var p0_times: Array
+var p1_times: Array
 
 var is_paused: bool = true
 var is_input_disabled = true
@@ -73,6 +75,10 @@ func set_up_position():
 	values.resize(8)
 	
 	positions.clear()
+
+
+func _process(delta: float) -> void:
+	timer += delta
 
 
 func _input(event: InputEvent) -> void:
@@ -144,11 +150,20 @@ func ai_loop():
 		ai_turn(p1.random())
 		
 		while true:
+			
+			timer = 0
+			
 			if ai_turn(p0.move_search()): break
 			#semaphore.wait()
 			
+			p0_times.append(timer)
+			
+			timer = 0
+			
 			if ai_turn(p1.move_search()): break
 			#semaphore.wait()
+			
+			p1_times.append(timer)
 		
 		call_deferred("print_ai_outcomes")
 
@@ -191,13 +206,31 @@ func print_ai_outcomes():
 	var p0_count = 0
 	var p1_count = 0
 	
-	for out in ai_outcomes:
-		match out:
+	var out = "=[  1  | = |  2  ]=\n"
+	
+	for x in ai_outcomes:
+		match x:
 			"0": draw_count += 1
 			"1": p0_count += 1
 			"2": p1_count += 1
 	
-	var out = str(p0_count) + " | " + str(draw_count) + " | " + str(p1_count) + "\n\n"
+	var counts = str(p0_count) + " | " + str(draw_count) + " | " + str(p1_count)
+	out += " ".repeat((19 - counts.length()) / 2) + counts + "\n\n"
+	
+	out += "=[ avg turn time ]=\n"
+	
+	var p0_avg = 0
+	for time in p0_times: p0_avg += time
+	p0_avg /= p0_times.size()
+	
+	var p1_avg = 0
+	for time in p1_times: p1_avg += time
+	p1_avg /= p1_times.size()
+	
+	out += "p1 avg. : " + str(snapped(p0_avg, 0.001)) \
+	+ "\np2 avg. : " + str(snapped(p1_avg, 0.001)) + "\n\n"
+	
+	out += "=[   game log    ]=\n"
 	
 	var size = ai_outcomes.size()
 	if size > 3: size = 3
