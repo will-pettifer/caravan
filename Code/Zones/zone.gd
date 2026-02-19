@@ -87,8 +87,8 @@ func win():
 		timer = 0
 		is_winning = true
 	
-	var style = load("res://Art/ui_plain.tres").duplicate()
-	style.texture = load("res://Art/ui3.png")
+	var style = load("res://Art/UI/ui_plain.tres").duplicate()
+	style.texture = load("res://Art/UI/ui3.png")
 	$Panel.add_theme_stylebox_override("panel", style)
 
 

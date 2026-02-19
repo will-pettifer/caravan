@@ -29,6 +29,7 @@ var is_input_disabled = true
 var is_player_start: bool = false
 var is_game_started: bool = false
 var is_game_end: bool = false
+var is_ai_step_through = true
 
 var thread: Thread
 var mutex: Mutex
@@ -83,7 +84,6 @@ func _process(delta: float) -> void:
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("next"):
-		print(print_pos())
 		semaphore.post()
 	if is_paused or is_game_end or is_input_disabled: return
 	if event.is_action_pressed("select"):
@@ -118,10 +118,6 @@ func _input(event: InputEvent) -> void:
 		cancel()
 
 
-func _exit_tree():
-	thread.wait_to_finish()
-
-
 func start_game():
 	if is_game_started:
 		restart()
@@ -132,10 +128,13 @@ func start_game():
 	
 	if p0:
 		ai_out.visible = true
-		thread.start(ai_loop)
+		if OS.has_environment("web"):
+			ai_loop()
+		else:
+			thread.start(ai_loop)
 	else:
 		is_input_disabled = false
-		enemy_move(p1.random())
+		if !is_player_start: enemy_move(p1.random())
 
 
 func restart():
@@ -154,18 +153,24 @@ func ai_loop():
 			timer = 0
 			
 			if ai_turn(p0.move_search()): break
-			#semaphore.wait()
+			
+			if is_ai_step_through:
+				print(print_pos())
+				semaphore.wait()
 			
 			p0_times.append(timer)
 			
 			timer = 0
 			
 			if ai_turn(p1.move_search()): break
-			#semaphore.wait()
+			
+			if is_ai_step_through:
+				print(print_pos())
+				semaphore.wait()
 			
 			p1_times.append(timer)
-		
-		call_deferred("print_ai_outcomes")
+			
+			call_deferred("print_ai_outcomes")
 
 
 func ai_turn(move: Move):
@@ -309,8 +314,20 @@ func drop(zone: Zone):
 	
 	is_input_disabled = true
 	
-	thread.wait_to_finish()
-	thread.start(ai_opp_turn)
+	if OS.has_feature("web"):
+		var move = p1.move_search()
+		enemy_move(move)
+		refresh_posts()
+		if try_end_game():
+			return
+		
+		print(print_pos())
+		
+		is_input_disabled = false
+		
+	else:
+		thread.wait_to_finish()
+		thread.start(ai_opp_turn)
 
 func refresh_posts():
 	var winning_posts = posts_win_check()
@@ -469,7 +486,10 @@ func print_pos():
 	var out = ""
 	
 	for i in 8:
-		out += position.substr(i * 10, 10) + " | " + str(values[i]) + "\n"
+		if i != 3 and i != 7:
+			out += position.substr(i * 10, 10).replace("0", " ") + " | " + str(values[i]) + "\n"
+		else:
+			out += position.substr(i * 10, 10).replace("0", " ") + " |\n"
 		if i == 3:
 			out += "-----------|---\n"
 	

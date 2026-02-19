@@ -30,7 +30,8 @@ window/stretch/mode="viewport"
 
 folder_colors={
 "res://Art/": "orange",
-"res://Code/": "blue"
+"res://Code/": "blue",
+"res://Scenes/": "green"
 }
 
 [input]
