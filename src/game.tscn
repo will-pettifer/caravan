@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://b8kk0eajo2w3a"]
+
+[node name="Game" type="Node3D"]
+
+[node name="LicenceTerminal" type="Node3D" parent="."]
+
+[node name="Screen" type="SubViewport" parent="LicenceTerminal"]
+
+[node name="LicenceMarket" type="Node2D" parent="LicenceTerminal/Screen"]
+
+[node name="DriveDraw" type="Node3D" parent="LicenceTerminal"]
+
+[node name="TradingTerminal" type="Node3D" parent="."]
+
+[node name="Screen" type="SubViewport" parent="TradingTerminal"]
+
+[node name="Portfolio" type="Node2D" parent="TradingTerminal/Screen"]
+
+[node name="CaravanMarket" type="Node2D" parent="TradingTerminal/Screen"]
+
+[node name="BuyerProfiles" type="Node3D" parent="."]
+
+[node name="Bulletin" type="Node3D" parent="."]
+
+[node name="Map" type="Node3D" parent="."]
+
+[node name="Environment" type="Node3D" parent="."]

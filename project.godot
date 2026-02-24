@@ -18,6 +18,10 @@ boot_splash/fullsize=false
 boot_splash/image="uid://bh5w8ado6u414"
 config/icon="uid://iuvh0mm36ru1"
 
+[autoload]
+
+GameManager="*res://src/game_manager.gd"
+
 [display]
 
 window/size/viewport_width=800
@@ -29,9 +33,8 @@ window/stretch/mode="viewport"
 [file_customization]
 
 folder_colors={
-"res://Art/": "orange",
-"res://Code/": "blue",
-"res://Scenes/": "green"
+"res://assets/": "orange",
+"res://src/": "green"
 }
 
 [input]
