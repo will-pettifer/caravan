@@ -11,7 +11,7 @@ var cooldown: float
 var timer: float = 0
 
 var held_card: Card
-var main: Main
+var main
 var p0: AI
 var p1 = Willow.new(self, -1)
 

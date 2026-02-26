@@ -4,7 +4,7 @@ class_name Card
 
 @export var offset: Vector2 = Vector2(0, 0)
 
-var game_manager: CaravanMarket
+var game_manager
 var state: State
 var value: int = 1
 var parent_zone: Zone

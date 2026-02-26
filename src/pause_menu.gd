@@ -1,7 +1,7 @@
 extends Control
 
 
-var game_manager: CaravanMarket
+var game_manager
 
 
 func _ready() -> void:

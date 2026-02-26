@@ -4,14 +4,14 @@ extends Area2D
 
 @export var type: Type
 
-var game_manager: CaravanMarket
+var game_manager
 var focused := false
 var value: int
 var cards: Array[Card]
 var is_winning = false
 var timer = 0
 
-const CARD := preload("res://Code/card.tscn")
+const CARD := preload("res://src/CaravanMarket/card.tscn")
 const CARD_SPACING: float = 24
 const CARDS_OFFSET := Vector2(0, 0)
 

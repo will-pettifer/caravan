@@ -1,6 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://da2k574pbxm1o"]
+[gd_scene load_steps=16 format=3 uid="uid://da2k574pbxm1o"]
 
-[ext_resource type="Script" path="res://Scenes/game_manager.gd" id="1_pa13t"]
+[ext_resource type="Script" uid="uid://21p5u4nqlgfj" path="res://src/CaravanMarket/caravan_market.gd" id="1_skusr"]
 [ext_resource type="PackedScene" uid="uid://bgb0e6o5i7kn0" path="res://src/CaravanMarket/Zones/zone.tscn" id="2_y4il6"]
 [ext_resource type="PackedScene" uid="uid://6732h1aidchu" path="res://src/CaravanMarket/Zones/zone_enemy_hand.tscn" id="3_em7n5"]
 [ext_resource type="PackedScene" uid="uid://dyfaj33f4ou10" path="res://src/CaravanMarket/Zones/zone_player.tscn" id="4_4gscd"]
@@ -8,11 +8,59 @@
 [ext_resource type="PackedScene" uid="uid://cxcdnctyjxcf6" path="res://src/CaravanMarket/Zones/zone_enemy.tscn" id="5_w14lw"]
 [ext_resource type="Theme" uid="uid://cpp4wdw68utdq" path="res://assets/ui/ui_theme.tres" id="6_em7n5"]
 [ext_resource type="Script" uid="uid://80af0byr3amx" path="res://src/pause_menu.gd" id="6_y4il6"]
+[ext_resource type="Texture2D" uid="uid://dnn8kamutbgls" path="res://assets/ui/cursor.png" id="10_3s0ow"]
+[ext_resource type="Script" uid="uid://d3f0epuu7blcn" path="res://src/cursor.gd" id="10_e0ccj"]
 
-[node name="GameManager" type="Node"]
-script = ExtResource("1_pa13t")
+[sub_resource type="AtlasTexture" id="AtlasTexture_e0ccj"]
+atlas = ExtResource("10_3s0ow")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7t2vl"]
+atlas = ExtResource("10_3s0ow")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i7mrr"]
+atlas = ExtResource("10_3s0ow")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_18ppj"]
+atlas = ExtResource("10_3s0ow")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_sd76s"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e0ccj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7t2vl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i7mrr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_18ppj")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="CaravanMarket" type="Node2D"]
+script = ExtResource("1_skusr")
+
+[node name="CursorLayer" type="CanvasLayer" parent="."]
+layer = 2
 
 [node name="UILayer" type="CanvasLayer" parent="."]
+
+[node name="Cursor" type="Node2D" parent="UILayer"]
+z_index = 1000
+script = ExtResource("10_e0ccj")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="UILayer/Cursor"]
+sprite_frames = SubResource("SpriteFrames_sd76s")
 
 [node name="PauseMenu" type="CenterContainer" parent="UILayer"]
 z_index = 20
@@ -149,28 +197,28 @@ text = "AI Output"
 
 [node name="ZoneP3Hand" parent="." instance=ExtResource("2_y4il6")]
 z_index = -4
-position = Vector2(600, 280)
+position = Vector2(468, 311)
 
 [node name="ZoneE7Hand" parent="." instance=ExtResource("3_em7n5")]
-position = Vector2(200, 170)
+position = Vector2(68, 201)
 
 [node name="ZoneP0" parent="." instance=ExtResource("4_4gscd")]
-position = Vector2(300, 280)
+position = Vector2(168, 311)
 
 [node name="ZoneP1" parent="." instance=ExtResource("4_4gscd")]
-position = Vector2(400, 280)
+position = Vector2(268, 311)
 
 [node name="ZoneP2" parent="." instance=ExtResource("4_4gscd")]
-position = Vector2(500, 280)
+position = Vector2(368, 311)
 
 [node name="ZoneE4" parent="." instance=ExtResource("5_w14lw")]
-position = Vector2(300, 170)
+position = Vector2(168, 201)
 
 [node name="ZoneE5" parent="." instance=ExtResource("5_w14lw")]
-position = Vector2(400, 170)
+position = Vector2(268, 201)
 
 [node name="ZoneE6" parent="." instance=ExtResource("5_w14lw")]
-position = Vector2(500, 170)
+position = Vector2(368, 201)
 
 [connection signal="pressed" from="UILayer/PauseMenu/Main/VBoxContainer/StartGame" to="UILayer/PauseMenu" method="_on_start_game_pressed"]
 [connection signal="item_selected" from="UILayer/PauseMenu/Main/VBoxContainer/SelectPlayer/P1Select" to="UILayer/PauseMenu" method="_on_p_1_select_item_selected"]

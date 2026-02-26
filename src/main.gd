@@ -1,15 +1,13 @@
 class_name Main
-extends Node2D
+extends Node3D
 
 
 var game_manager: CaravanMarket
 
-const GAME_MANAGER := preload("res://Scenes/caravan_market.tscn")
+const GAME_MANAGER := preload("res://src/CaravanMarket/caravan_market.tscn")
 
 
 func _ready() -> void:
-	game_manager = get_node("GameManager")
-	
 	if OS.has_feature("release"):
 		DisplayServer.window_set_size(Vector2i(1600, 900))
 		DisplayServer.window_set_position(

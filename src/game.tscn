@@ -1,6 +1,25 @@
-[gd_scene format=3 uid="uid://b8kk0eajo2w3a"]
+[gd_scene load_steps=7 format=3 uid="uid://b8kk0eajo2w3a"]
+
+[ext_resource type="Script" uid="uid://b0os40hlt02co" path="res://src/screen.gd" id="1_3msxb"]
+[ext_resource type="PackedScene" uid="uid://da2k574pbxm1o" path="res://src/CaravanMarket/caravan_market.tscn" id="1_7uq6d"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3msxb"]
+size = Vector3(1, 1, 0.01)
+
+[sub_resource type="QuadMesh" id="QuadMesh_3msxb"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_xq6wo"]
+viewport_path = NodePath("TradingTerminal/Screen/SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kc8ui"]
+resource_local_to_scene = true
+albedo_texture = SubResource("ViewportTexture_xq6wo")
+texture_filter = 0
 
 [node name="Game" type="Node3D"]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.6443548)
 
 [node name="LicenceTerminal" type="Node3D" parent="."]
 
@@ -12,11 +31,28 @@
 
 [node name="TradingTerminal" type="Node3D" parent="."]
 
-[node name="Screen" type="SubViewport" parent="TradingTerminal"]
+[node name="Screen" type="Node3D" parent="TradingTerminal"]
+script = ExtResource("1_3msxb")
 
-[node name="Portfolio" type="Node2D" parent="TradingTerminal/Screen"]
+[node name="StaticBody3D" type="StaticBody3D" parent="TradingTerminal/Screen"]
 
-[node name="CaravanMarket" type="Node2D" parent="TradingTerminal/Screen"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TradingTerminal/Screen/StaticBody3D"]
+shape = SubResource("BoxShape3D_3msxb")
+
+[node name="QuadMesh" type="MeshInstance3D" parent="TradingTerminal/Screen"]
+mesh = SubResource("QuadMesh_3msxb")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_kc8ui")
+
+[node name="SubViewport" type="SubViewport" parent="TradingTerminal/Screen"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(540, 540)
+
+[node name="Portfolio" type="Node2D" parent="TradingTerminal/Screen/SubViewport"]
+
+[node name="CaravanMarket" parent="TradingTerminal/Screen/SubViewport" instance=ExtResource("1_7uq6d")]
+script = null
 
 [node name="BuyerProfiles" type="Node3D" parent="."]
 
@@ -25,3 +61,6 @@
 [node name="Map" type="Node3D" parent="."]
 
 [node name="Environment" type="Node3D" parent="."]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4003744, 0.41585582)

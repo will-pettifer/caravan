@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://bd1oywkml7kjq"]
+
+[ext_resource type="Texture2D" uid="uid://iuvh0mm36ru1" path="res://Icon.svg" id="2_kxhy4"]
+
+[sub_resource type="GDScript" id="GDScript_1lapr"]
+script/source = "extends Node2D
+
+var timer = 5
+
+func _process(delta: float) -> void:
+	timer -= delta
+	if timer < 0:
+		queue_free()
+"
+
+[node name="DebugPoint" type="Node2D"]
+script = SubResource("GDScript_1lapr")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_kxhy4")
