@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://b8kk0eajo2w3a"]
+[gd_scene load_steps=10 format=3 uid="uid://b8kk0eajo2w3a"]
 
 [ext_resource type="Script" uid="uid://b0os40hlt02co" path="res://src/screen.gd" id="1_3msxb"]
 [ext_resource type="PackedScene" uid="uid://da2k574pbxm1o" path="res://src/CaravanMarket/caravan_market.tscn" id="1_7uq6d"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_3msxb"]
-size = Vector3(1, 1, 0.01)
+[ext_resource type="PackedScene" uid="uid://cl0n22dxsihf5" path="res://src/terminals/terminal_ui.tscn" id="2_pk08u"]
+[ext_resource type="Theme" uid="uid://cpp4wdw68utdq" path="res://assets/ui/ui_theme.tres" id="3_wqvko"]
+[ext_resource type="Script" uid="uid://80af0byr3amx" path="res://src/pause_menu.gd" id="4_cdx1q"]
+[ext_resource type="FontFile" uid="uid://c8codt4ss2gag" path="res://assets/fonts/BigBlueTerm437NerdFontMono-Regular.ttf" id="5_4bcji"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_3msxb"]
 
@@ -19,7 +20,7 @@ texture_filter = 0
 [node name="Game" type="Node3D"]
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.6443548)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.20400727)
 
 [node name="LicenceTerminal" type="Node3D" parent="."]
 
@@ -32,12 +33,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.6443548)
 [node name="TradingTerminal" type="Node3D" parent="."]
 
 [node name="Screen" type="Node3D" parent="TradingTerminal"]
+transform = Transform3D(0.42051673, 0, 0, 0, 0.42051673, 0, 0, 0, 1, 0, 0, 0)
 script = ExtResource("1_3msxb")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="TradingTerminal/Screen"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TradingTerminal/Screen/StaticBody3D"]
-shape = SubResource("BoxShape3D_3msxb")
 
 [node name="QuadMesh" type="MeshInstance3D" parent="TradingTerminal/Screen"]
 mesh = SubResource("QuadMesh_3msxb")
@@ -48,6 +45,141 @@ surface_material_override/0 = SubResource("StandardMaterial3D_kc8ui")
 transparent_bg = true
 handle_input_locally = false
 size = Vector2i(540, 540)
+
+[node name="TerminalUI" parent="TradingTerminal/Screen/SubViewport" instance=ExtResource("2_pk08u")]
+
+[node name="PauseMenu2" type="CenterContainer" parent="TradingTerminal/Screen/SubViewport/TerminalUI"]
+z_index = 20
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1.0
+offset_right = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_wqvko")
+script = ExtResource("4_cdx1q")
+
+[node name="Main" type="PanelContainer" parent="TradingTerminal/Screen/SubViewport/TerminalUI/PauseMenu2"]
+visible = false
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TradingTerminal/Screen/SubViewport/TerminalUI/PauseMenu2/Main"]
+layout_mode = 2
+
+[node name="StartGame" type="Button" parent="TradingTerminal/Screen/SubViewport/TerminalUI/PauseMenu2/Main/VBoxContainer"]
+layout_mode = 2
+text = "Start Game"
+
+[node name="SelectPlayer" type="HBoxContainer" parent="TradingTerminal/Screen/SubViewport/TerminalUI/PauseMenu2/Main/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TradingTerminal/Screen/SubViewport/TerminalUI/PauseMenu2/Main/VBoxContainer/SelectPlayer"]
+layout_mode = 2
+text = "  Select player 1:   "
+
+[node name="P1Select" type="OptionButton" parent="TradingTerminal/Screen/SubViewport/TerminalUI/PauseMenu2/Main/VBoxContainer/SelectPlayer"]
+layout_mode = 2
+selected = 0
+item_count = 3
+popup/item_0/text = "Human"
+popup/item_0/id = 1
+popup/item_1/text = "Willow"
+popup/item_1/id = 0
+popup/item_2/text = "Pine"
+popup/item_2/id = 2
+
+[node name="SelectOpponent" type="HBoxContainer" parent="TradingTerminal/Screen/SubViewport/TerminalUI/PauseMenu2/Main/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TradingTerminal/Screen/SubViewport/TerminalUI/PauseMenu2/Main/VBoxContainer/SelectOpponent"]
+layout_mode = 2
+text = "  Select player 2:   "
+
+[node name="P2Select" type="OptionButton" parent="TradingTerminal/Screen/SubViewport/TerminalUI/PauseMenu2/Main/VBoxContainer/SelectOpponent"]
+layout_mode = 2
+selected = 0
+item_count = 2
+popup/item_0/text = "Willow"
+popup/item_0/id = 0
+popup/item_1/text = "Pine"
+popup/item_1/id = 1
+
+[node name="PlayerStarts" type="CheckButton" parent="TradingTerminal/Screen/SubViewport/TerminalUI/PauseMenu2/Main/VBoxContainer"]
+layout_mode = 2
+text = "Player 1 starts:"
+
+[node name="Tutorial" type="Button" parent="TradingTerminal/Screen/SubViewport/TerminalUI/PauseMenu2/Main/VBoxContainer"]
+layout_mode = 2
+text = "Rules"
+
+[node name="Quit" type="Button" parent="TradingTerminal/Screen/SubViewport/TerminalUI/PauseMenu2/Main/VBoxContainer"]
+layout_mode = 2
+text = "Quit"
+
+[node name="Rules" type="PanelContainer" parent="TradingTerminal/Screen/SubViewport/TerminalUI/PauseMenu2"]
+visible = false
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TradingTerminal/Screen/SubViewport/TerminalUI/PauseMenu2/Rules"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TradingTerminal/Screen/SubViewport/TerminalUI/PauseMenu2/Rules/VBoxContainer"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+text = "The players compete to sell as many lots as they can. They take it in turns either moving a card from their caravan into one of their three lots, or moving a card from one lot to another. If 2 cards add up to 10, they add up to 20. The game ends when there is one valid lot at each of the three trading posts. Valid lots are:
+
+- From 25 to 30, inclusive, and higher than the opposing lot, or,
+- Exactly 5 below the opposing lot.
+
+Lots that are 5 below always win.
+
+The winner is whoever sold the most lots."
+autowrap_mode = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TradingTerminal/Screen/SubViewport/TerminalUI/PauseMenu2/Rules/VBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="Back" type="Button" parent="TradingTerminal/Screen/SubViewport/TerminalUI/PauseMenu2/Rules/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Back"
+
+[node name="EndMessage" type="PanelContainer" parent="TradingTerminal/Screen/SubViewport/TerminalUI/PauseMenu2"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TradingTerminal/Screen/SubViewport/TerminalUI/PauseMenu2/EndMessage"]
+layout_mode = 2
+
+[node name="MenuButton2" type="PanelContainer" parent="TradingTerminal/Screen/SubViewport/TerminalUI"]
+offset_left = 8.0
+offset_top = 403.0
+offset_right = 69.0
+offset_bottom = 442.0
+theme = ExtResource("3_wqvko")
+
+[node name="Menu" type="Button" parent="TradingTerminal/Screen/SubViewport/TerminalUI/MenuButton2"]
+layout_mode = 2
+text = "Menu
+"
+
+[node name="AIOutput2" type="PanelContainer" parent="TradingTerminal/Screen/SubViewport/TerminalUI"]
+visible = false
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -84.0
+offset_top = 13.0
+offset_right = -12.0
+offset_bottom = 53.0
+grow_horizontal = 0
+
+[node name="Label" type="Label" parent="TradingTerminal/Screen/SubViewport/TerminalUI/AIOutput2"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_4bcji")
+theme_override_font_sizes/font_size = 12
+text = "AI Output"
 
 [node name="Portfolio" type="Node2D" parent="TradingTerminal/Screen/SubViewport"]
 
@@ -64,3 +196,13 @@ script = null
 
 [node name="OmniLight3D" type="OmniLight3D" parent="Environment"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4003744, 0.41585582)
+
+[connection signal="pressed" from="TradingTerminal/Screen/SubViewport/TerminalUI/PauseMenu2/Main/VBoxContainer/StartGame" to="TradingTerminal/Screen/SubViewport/TerminalUI/PauseMenu2" method="_on_start_game_pressed"]
+[connection signal="item_selected" from="TradingTerminal/Screen/SubViewport/TerminalUI/PauseMenu2/Main/VBoxContainer/SelectPlayer/P1Select" to="TradingTerminal/Screen/SubViewport/TerminalUI/PauseMenu2" method="_on_p_1_select_item_selected"]
+[connection signal="item_selected" from="TradingTerminal/Screen/SubViewport/TerminalUI/PauseMenu2/Main/VBoxContainer/SelectOpponent/P2Select" to="TradingTerminal/Screen/SubViewport/TerminalUI/PauseMenu2" method="_on_p_2_select_item_selected"]
+[connection signal="toggled" from="TradingTerminal/Screen/SubViewport/TerminalUI/PauseMenu2/Main/VBoxContainer/PlayerStarts" to="TradingTerminal/Screen/SubViewport/TerminalUI/PauseMenu2" method="_on_player_starts_toggled"]
+[connection signal="pressed" from="TradingTerminal/Screen/SubViewport/TerminalUI/PauseMenu2/Main/VBoxContainer/Tutorial" to="TradingTerminal/Screen/SubViewport/TerminalUI/PauseMenu2" method="_on_tutorial_pressed"]
+[connection signal="pressed" from="TradingTerminal/Screen/SubViewport/TerminalUI/PauseMenu2/Main/VBoxContainer/Quit" to="TradingTerminal/Screen/SubViewport/TerminalUI/PauseMenu2" method="_on_quit_pressed"]
+[connection signal="pressed" from="TradingTerminal/Screen/SubViewport/TerminalUI/PauseMenu2/Rules/VBoxContainer/HBoxContainer/Back" to="TradingTerminal/Screen/SubViewport/TerminalUI/PauseMenu2" method="_on_back_pressed"]
+[connection signal="pressed" from="TradingTerminal/Screen/SubViewport/TerminalUI/MenuButton2/Menu" to="TradingTerminal/Screen/SubViewport/TerminalUI/PauseMenu2" method="_on_menu_pressed"]
+[connection signal="pressed" from="TradingTerminal/Screen/SubViewport/TerminalUI/MenuButton2/Menu" to="TradingTerminal/Screen/SubViewport/TerminalUI/PauseMenu2" method="_on_button_pressed"]
