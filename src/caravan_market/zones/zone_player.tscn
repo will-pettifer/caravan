@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dyfaj33f4ou10"]
 
-[ext_resource type="PackedScene" uid="uid://bgb0e6o5i7kn0" path="res://src/CaravanMarket/Zones/zone.tscn" id="1_xkteg"]
+[ext_resource type="PackedScene" uid="uid://bgb0e6o5i7kn0" path="res://src/caravan_market/zones/zone.tscn" id="1_xkteg"]
 [ext_resource type="Theme" uid="uid://cpp4wdw68utdq" path="res://assets/ui/ui_theme.tres" id="2_n5ap7"]
 
 [node name="Zone" instance=ExtResource("1_xkteg")]

@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=3 uid="uid://b8kk0eajo2w3a"]
 
 [ext_resource type="Script" uid="uid://b0os40hlt02co" path="res://src/screen.gd" id="1_3msxb"]
-[ext_resource type="PackedScene" uid="uid://da2k574pbxm1o" path="res://src/CaravanMarket/caravan_market.tscn" id="1_7uq6d"]
+[ext_resource type="PackedScene" uid="uid://da2k574pbxm1o" path="res://src/caravan_market/caravan_market.tscn" id="1_7uq6d"]
 [ext_resource type="PackedScene" uid="uid://cl0n22dxsihf5" path="res://src/terminals/terminal_ui.tscn" id="2_pk08u"]
 [ext_resource type="Theme" uid="uid://cpp4wdw68utdq" path="res://assets/ui/ui_theme.tres" id="3_wqvko"]
 [ext_resource type="Script" uid="uid://80af0byr3amx" path="res://src/pause_menu.gd" id="4_cdx1q"]

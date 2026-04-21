@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cxcdnctyjxcf6"]
 
-[ext_resource type="PackedScene" uid="uid://dyfaj33f4ou10" path="res://src/CaravanMarket/Zones/zone_player.tscn" id="1_n5bro"]
+[ext_resource type="PackedScene" uid="uid://dyfaj33f4ou10" path="res://src/caravan_market/zones/zone_player.tscn" id="1_n5bro"]
 
 [node name="Zone" instance=ExtResource("1_n5bro")]
 type = 2

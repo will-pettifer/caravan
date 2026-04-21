@@ -1,10 +1,10 @@
 [gd_scene load_steps=6 format=3 uid="uid://da2k574pbxm1o"]
 
-[ext_resource type="Script" uid="uid://21p5u4nqlgfj" path="res://src/CaravanMarket/caravan_market.gd" id="1_skusr"]
-[ext_resource type="PackedScene" uid="uid://bgb0e6o5i7kn0" path="res://src/CaravanMarket/Zones/zone.tscn" id="2_y4il6"]
-[ext_resource type="PackedScene" uid="uid://6732h1aidchu" path="res://src/CaravanMarket/Zones/zone_enemy_hand.tscn" id="3_em7n5"]
-[ext_resource type="PackedScene" uid="uid://dyfaj33f4ou10" path="res://src/CaravanMarket/Zones/zone_player.tscn" id="4_4gscd"]
-[ext_resource type="PackedScene" uid="uid://cxcdnctyjxcf6" path="res://src/CaravanMarket/Zones/zone_enemy.tscn" id="5_w14lw"]
+[ext_resource type="Script" uid="uid://21p5u4nqlgfj" path="res://src/caravan_market/caravan_market.gd" id="1_skusr"]
+[ext_resource type="PackedScene" uid="uid://bgb0e6o5i7kn0" path="res://src/caravan_market/zones/zone.tscn" id="2_y4il6"]
+[ext_resource type="PackedScene" uid="uid://6732h1aidchu" path="res://src/caravan_market/zones/zone_enemy_hand.tscn" id="3_em7n5"]
+[ext_resource type="PackedScene" uid="uid://dyfaj33f4ou10" path="res://src/caravan_market/zones/zone_player.tscn" id="4_4gscd"]
+[ext_resource type="PackedScene" uid="uid://cxcdnctyjxcf6" path="res://src/caravan_market/zones/zone_enemy.tscn" id="5_w14lw"]
 
 [node name="CaravanMarket" type="Node2D"]
 script = ExtResource("1_skusr")
