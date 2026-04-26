@@ -396,8 +396,6 @@ func win_check():
 		
 		trading_posts[i] = 0
 	
-	if score == 3: return INF
-	if score == -3: return -INF
 	if trading_posts[0] != 0 and trading_posts[1] != 0 and trading_posts[2] != 0:
 		return score * INF
 	
