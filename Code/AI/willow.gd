@@ -18,22 +18,3 @@ func move_search(player = self.player):
 		game_manager.unmove(move)
 	
 	return best_move
-
-
-func evaluate_position():
-	var score = game_manager.win_check()
-	
-	if score == 0.1: return 0
-	
-	score *= 100
-	
-	var p0 = 0
-	var p1 = 0
-	for i in range(0, 3):
-		p0 += 30 - abs(30 - game_manager.values[i])
-	for i in range(4, 7):
-		p1 += 30 - abs(30 - game_manager.values[i])
-	
-	score += p0 + p1 * -1
-	
-	return score

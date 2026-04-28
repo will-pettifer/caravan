@@ -1,4 +1,4 @@
-class_name Pine
+class_name PineTest
 extends AI
 
 
@@ -6,7 +6,7 @@ func move_search(player = self.player):
 	var moves = generate_moves(player)
 	var best_move
 	var best_score = -INF
-	var depth = 3
+	var depth = 2
 	
 	for move in moves:
 		game_manager.move(move)

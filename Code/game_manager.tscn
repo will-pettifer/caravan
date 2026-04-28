@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cqyun64jyofbe"]
+[gd_scene format=3 uid="uid://cqyun64jyofbe"]
 
 [ext_resource type="Script" uid="uid://21p5u4nqlgfj" path="res://Code/game_manager.gd" id="1_pa13t"]
 [ext_resource type="PackedScene" uid="uid://bgb0e6o5i7kn0" path="res://Code/Zones/zone.tscn" id="2_y4il6"]
@@ -9,12 +9,12 @@
 [ext_resource type="Theme" uid="uid://cpp4wdw68utdq" path="res://Art/UI/ui_theme.tres" id="6_em7n5"]
 [ext_resource type="Script" uid="uid://80af0byr3amx" path="res://Code/pause_menu.gd" id="6_y4il6"]
 
-[node name="GameManager" type="Node"]
+[node name="GameManager" type="Node" unique_id=931525535]
 script = ExtResource("1_pa13t")
 
-[node name="UILayer" type="CanvasLayer" parent="."]
+[node name="UILayer" type="CanvasLayer" parent="." unique_id=144171715]
 
-[node name="PauseMenu" type="CenterContainer" parent="UILayer"]
+[node name="PauseMenu" type="CenterContainer" parent="UILayer" unique_id=1947542995]
 z_index = 20
 anchors_preset = 15
 anchor_right = 1.0
@@ -26,71 +26,79 @@ grow_vertical = 2
 theme = ExtResource("6_em7n5")
 script = ExtResource("6_y4il6")
 
-[node name="Main" type="PanelContainer" parent="UILayer/PauseMenu"]
+[node name="Main" type="PanelContainer" parent="UILayer/PauseMenu" unique_id=1796833939]
 visible = false
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UILayer/PauseMenu/Main"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UILayer/PauseMenu/Main" unique_id=1913472274]
 layout_mode = 2
 
-[node name="StartGame" type="Button" parent="UILayer/PauseMenu/Main/VBoxContainer"]
+[node name="StartGame" type="Button" parent="UILayer/PauseMenu/Main/VBoxContainer" unique_id=452722451]
 layout_mode = 2
 text = "Start Game"
 
-[node name="SelectPlayer" type="HBoxContainer" parent="UILayer/PauseMenu/Main/VBoxContainer"]
+[node name="SelectPlayer" type="HBoxContainer" parent="UILayer/PauseMenu/Main/VBoxContainer" unique_id=798930692]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="UILayer/PauseMenu/Main/VBoxContainer/SelectPlayer"]
+[node name="Label" type="Label" parent="UILayer/PauseMenu/Main/VBoxContainer/SelectPlayer" unique_id=1844765020]
 layout_mode = 2
 text = "  Select player 1:   "
 
-[node name="P1Select" type="OptionButton" parent="UILayer/PauseMenu/Main/VBoxContainer/SelectPlayer"]
+[node name="P1Select" type="OptionButton" parent="UILayer/PauseMenu/Main/VBoxContainer/SelectPlayer" unique_id=538975732]
 layout_mode = 2
 selected = 0
-item_count = 3
+item_count = 5
 popup/item_0/text = "Human"
-popup/item_0/id = 1
+popup/item_0/id = 0
 popup/item_1/text = "Willow"
-popup/item_1/id = 0
+popup/item_1/id = 1
 popup/item_2/text = "Pine"
 popup/item_2/id = 2
+popup/item_3/text = "PineTest"
+popup/item_3/id = 3
+popup/item_4/text = "Buddleia"
+popup/item_4/id = 4
 
-[node name="SelectOpponent" type="HBoxContainer" parent="UILayer/PauseMenu/Main/VBoxContainer"]
+[node name="SelectOpponent" type="HBoxContainer" parent="UILayer/PauseMenu/Main/VBoxContainer" unique_id=1513816823]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="UILayer/PauseMenu/Main/VBoxContainer/SelectOpponent"]
+[node name="Label" type="Label" parent="UILayer/PauseMenu/Main/VBoxContainer/SelectOpponent" unique_id=2068059891]
 layout_mode = 2
 text = "  Select player 2:   "
 
-[node name="P2Select" type="OptionButton" parent="UILayer/PauseMenu/Main/VBoxContainer/SelectOpponent"]
+[node name="P2Select" type="OptionButton" parent="UILayer/PauseMenu/Main/VBoxContainer/SelectOpponent" unique_id=650900190]
 layout_mode = 2
 selected = 0
-item_count = 2
+item_count = 4
 popup/item_0/text = "Willow"
 popup/item_0/id = 0
 popup/item_1/text = "Pine"
 popup/item_1/id = 1
+popup/item_2/text = "PineTest"
+popup/item_2/id = 2
+popup/item_3/text = "Buddleia"
+popup/item_3/id = 3
 
-[node name="PlayerStarts" type="CheckButton" parent="UILayer/PauseMenu/Main/VBoxContainer"]
+[node name="PlayerStarts" type="CheckButton" parent="UILayer/PauseMenu/Main/VBoxContainer" unique_id=1164942406]
 layout_mode = 2
 text = "Player 1 starts:"
 
-[node name="Tutorial" type="Button" parent="UILayer/PauseMenu/Main/VBoxContainer"]
+[node name="Tutorial" type="Button" parent="UILayer/PauseMenu/Main/VBoxContainer" unique_id=850939539]
 layout_mode = 2
 text = "Rules"
 
-[node name="Quit" type="Button" parent="UILayer/PauseMenu/Main/VBoxContainer"]
+[node name="Quit" type="Button" parent="UILayer/PauseMenu/Main/VBoxContainer" unique_id=793468802]
 layout_mode = 2
 text = "Quit"
 
-[node name="Rules" type="PanelContainer" parent="UILayer/PauseMenu"]
+[node name="Rules" type="PanelContainer" parent="UILayer/PauseMenu" unique_id=528582955]
 visible = false
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UILayer/PauseMenu/Rules"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UILayer/PauseMenu/Rules" unique_id=1450640299]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="UILayer/PauseMenu/Rules/VBoxContainer"]
+[node name="Label" type="Label" parent="UILayer/PauseMenu/Rules/VBoxContainer" unique_id=279014320]
 custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 text = "The players compete to sell as many lots as they can. They take it in turns either moving a card from their caravan into one of their three lots, or moving a card from one lot to another. If 2 cards add up to 10, they add up to 20. The game ends when there is one valid lot at each of the three trading posts. Valid lots are:
@@ -103,34 +111,34 @@ Lots that are 5 below always win.
 The winner is whoever sold the most lots."
 autowrap_mode = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="UILayer/PauseMenu/Rules/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="UILayer/PauseMenu/Rules/VBoxContainer" unique_id=1435540868]
 layout_mode = 2
 alignment = 2
 
-[node name="Back" type="Button" parent="UILayer/PauseMenu/Rules/VBoxContainer/HBoxContainer"]
+[node name="Back" type="Button" parent="UILayer/PauseMenu/Rules/VBoxContainer/HBoxContainer" unique_id=1737268425]
 layout_mode = 2
 text = "Back"
 
-[node name="EndMessage" type="PanelContainer" parent="UILayer/PauseMenu"]
+[node name="EndMessage" type="PanelContainer" parent="UILayer/PauseMenu" unique_id=696824976]
 visible = false
 layout_mode = 2
 
-[node name="Label" type="Label" parent="UILayer/PauseMenu/EndMessage"]
+[node name="Label" type="Label" parent="UILayer/PauseMenu/EndMessage" unique_id=256106675]
 layout_mode = 2
 
-[node name="MenuButton" type="PanelContainer" parent="UILayer"]
+[node name="MenuButton" type="PanelContainer" parent="UILayer" unique_id=1836848444]
 offset_left = 8.0
 offset_top = 403.0
 offset_right = 69.0
 offset_bottom = 442.0
 theme = ExtResource("6_em7n5")
 
-[node name="Menu" type="Button" parent="UILayer/MenuButton"]
+[node name="Menu" type="Button" parent="UILayer/MenuButton" unique_id=451940031]
 layout_mode = 2
 text = "Menu
 "
 
-[node name="AIOutput" type="PanelContainer" parent="UILayer"]
+[node name="AIOutput" type="PanelContainer" parent="UILayer" unique_id=1350676563]
 visible = false
 anchors_preset = 1
 anchor_left = 1.0
@@ -141,35 +149,35 @@ offset_right = -12.0
 offset_bottom = 53.0
 grow_horizontal = 0
 
-[node name="Label" type="Label" parent="UILayer/AIOutput"]
+[node name="Label" type="Label" parent="UILayer/AIOutput" unique_id=823147890]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("4_w14lw")
 theme_override_font_sizes/font_size = 12
 text = "AI Output"
 
-[node name="ZoneP3Hand" parent="." instance=ExtResource("2_y4il6")]
+[node name="ZoneP3Hand" parent="." unique_id=1151643202 instance=ExtResource("2_y4il6")]
 z_index = -4
 position = Vector2(600, 280)
 
-[node name="ZoneE7Hand" parent="." instance=ExtResource("3_em7n5")]
+[node name="ZoneE7Hand" parent="." unique_id=2047421420 instance=ExtResource("3_em7n5")]
 position = Vector2(200, 170)
 
-[node name="ZoneP0" parent="." instance=ExtResource("4_4gscd")]
+[node name="ZoneP0" parent="." unique_id=766731507 instance=ExtResource("4_4gscd")]
 position = Vector2(300, 280)
 
-[node name="ZoneP1" parent="." instance=ExtResource("4_4gscd")]
+[node name="ZoneP1" parent="." unique_id=520085958 instance=ExtResource("4_4gscd")]
 position = Vector2(400, 280)
 
-[node name="ZoneP2" parent="." instance=ExtResource("4_4gscd")]
+[node name="ZoneP2" parent="." unique_id=1457685613 instance=ExtResource("4_4gscd")]
 position = Vector2(500, 280)
 
-[node name="ZoneE4" parent="." instance=ExtResource("5_w14lw")]
+[node name="ZoneE4" parent="." unique_id=1288752366 instance=ExtResource("5_w14lw")]
 position = Vector2(300, 170)
 
-[node name="ZoneE5" parent="." instance=ExtResource("5_w14lw")]
+[node name="ZoneE5" parent="." unique_id=1406058246 instance=ExtResource("5_w14lw")]
 position = Vector2(400, 170)
 
-[node name="ZoneE6" parent="." instance=ExtResource("5_w14lw")]
+[node name="ZoneE6" parent="." unique_id=1512826604 instance=ExtResource("5_w14lw")]
 position = Vector2(500, 170)
 
 [connection signal="pressed" from="UILayer/PauseMenu/Main/VBoxContainer/StartGame" to="UILayer/PauseMenu" method="_on_start_game_pressed"]
